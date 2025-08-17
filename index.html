@@ -83,18 +83,82 @@
         </label>
       </p>
       <p>
+
         <label>Message:<br>
           <textarea name="message"></textarea>
         </label>
       </p>
-      <p>
-        <button type="submit">Submit</button>
-      </p>
+
+      <p id="total"></p>
+      <div id="paypal-button-container"></div>
+
     </form>
   </section>
 
   <footer>
     <p>&copy; 2024 Wild West Wall Art</p>
   </footer>
-</body>
-</html>
+  
+  <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD&buyer-country=US"></script>
+  <script>
+  const prices = {
+    Metallic: { "20x40": 220, "24x36": 150, "20x30": 120, "16x24": 70 },
+    Acrylic: { "20x40": 180, "24x36": 130, "20x30": 100, "16x24": 60 },
+    Canvas: { "20x40": 180, "24x36": 130, "20x30": 100, "16x24": 60 }
+  };
+
+  const shippingCost = 10;
+  const finishSelect = document.querySelector('select[name="finish"]');
+  const sizeSelect = document.querySelector('select[name="size"]');
+  const quantityInput = document.querySelector('input[name="quantity"]');
+  const totalDisplay = document.getElementById('total');
+
+  function updateTotal() {
+    const finish = finishSelect.value;
+    const size = sizeSelect.value;
+    const quantity = parseInt(quantityInput.value, 10) || 1;
+    const itemPrice = prices[finish][size];
+    const total = itemPrice * quantity + shippingCost;
+    totalDisplay.textContent = `Total: $${total.toFixed(2)} (including $${shippingCost} shipping)`;
+    return { itemPrice, quantity, total };
+  }
+
+  finishSelect.addEventListener('change', updateTotal);
+  sizeSelect.addEventListener('change', updateTotal);
+  quantityInput.addEventListener('input', updateTotal);
+  updateTotal();
+
+  paypal.Buttons({
+    createOrder: function(data, actions) {
+      const { itemPrice, quantity, total } = updateTotal();
+      const finish = finishSelect.value;
+      const size = sizeSelect.value;
+      return actions.order.create({
+        purchase_units: [{
+          amount: {
+            value: total.toFixed(2),
+            currency_code: 'USD',
+            breakdown: {
+              item_total: { currency_code: 'USD', value: (itemPrice * quantity).toFixed(2) },
+              shipping: { currency_code: 'USD', value: shippingCost.toFixed(2) }
+            }
+          },
+          items: [{
+            name: `${finish} ${size}" Print`,
+            unit_amount: { currency_code: 'USD', value: itemPrice.toFixed(2) },
+            quantity: quantity.toString()
+          }]
+        }],
+        application_context: {
+          shipping_preference: 'GET_FROM_FILE'
+        }
+      });
+    },
+    onApprove: function(data, actions) {
+      return actions.order.capture().then(function(details) {
+        document.querySelector('form[name="order"]').submit();
+        window.location.href = 'thankyou.html';
+      });
+    }
+  }).render('#paypal-button-container');
+  </script>
