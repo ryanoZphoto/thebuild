@@ -5,20 +5,32 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Wild West Wall Art</title>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header class="site-header">
-    <img src="logo.png" alt="Wild West Wall Art logo" class="logo">
-    <div class="brand">
-      <h1>Wild West Wall Art</h1>
-      <p>Metal, Acrylic and Canvas Prints</p>
+  <nav class="nav" aria-label="Primary">
+    <div class="nav-inner">
+      <a class="nav-brand" href="#">
+        <img src="logo.png" alt="Wild West Wall Art logo" class="logo">
+        <span>Wild West Wall Art</span>
+      </a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">☰</button>
+      <ul id="nav-menu" class="nav-links">
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#order">Order</a></li>
+        <li><a href="mailto:ryan@ryanosmunphoto.com">Contact</a></li>
+      </ul>
     </div>
-  </header>
+  </nav>
 
   <section id="hero" aria-label="Featured">
     <video class="hero-video" src="hero-1p5x.mp4" autoplay muted loop playsinline preload="metadata"></video>
     <div class="hero-overlay">
-      <h2>Iconic desert scenes. Premium wall art.</h2>
+      <h1>Iconic Western Landscapes</h1>
+      <p>Premium metal, acrylic, and canvas prints.</p>
       <a class="cta" href="#order">Order a Print</a>
     </div>
   </section>
@@ -156,6 +168,18 @@
 
   <!-- PayPal SDK loader (dynamic) -->
   <script>
+    // Mobile nav toggle
+    (function(){
+      const btn = document.querySelector('.nav-toggle');
+      const menu = document.getElementById('nav-menu');
+      if (btn && menu) {
+        btn.addEventListener('click', () => {
+          const open = menu.classList.toggle('open');
+          btn.setAttribute('aria-expanded', String(open));
+        });
+      }
+    })();
+
     (function loadPayPalSdk(){
       const LIVE_CLIENT_ID = 'AcosS2AbZFUgYmDEx1dh9piJdWL3jM2u0RCRdjf5rJ0YerCZluqwthmTzCzWmov46D39CmL6N8Gysh6a';
       const clientId = LIVE_CLIENT_ID; // always use live client id
