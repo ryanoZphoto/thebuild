@@ -141,9 +141,26 @@
     <p>&copy; 2024 Wild West Wall Art</p>
   </footer>
 
-  <!-- Single PayPal SDK include (live only) -->
-  <script src="https://www.paypal.com/sdk/js?client-id=AQzQReGx2gCRwD7kWOFi5ntaDSGbIHcheIeW9fJ0gJHV9onPhjDuD6EjgVXASJIJVe6L3LC84kOboE28&currency=USD&intent=CAPTURE&components=buttons&enable-funding=card&commit=true"></script>
+  <!-- PayPal SDK loader (dynamic) -->
   <script>
+    (function loadPayPalSdk(){
+      const isLocal = ['localhost','127.0.0.1'].includes(location.hostname);
+      const LIVE_CLIENT_ID = 'REPLACE_WITH_LIVE_PAYPAL_CLIENT_ID';
+      const clientId = isLocal ? 'sb' : LIVE_CLIENT_ID;
+      const url = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(clientId)}&currency=USD&intent=CAPTURE&components=buttons&enable-funding=card&commit=true`;
+      const s = document.createElement('script');
+      s.src = url;
+      s.async = true;
+      s.onload = function(){
+        try { renderPayPalButtons(); } catch (e) { console.error('Render PayPal failed', e); }
+      };
+      s.onerror = function(){
+        console.error('Failed to load PayPal SDK', url);
+        alert('Unable to load PayPal. Please refresh or try again later.');
+      };
+      document.head.appendChild(s);
+    })();
+
     const prices = {
       Metallic: { "20x40": 220, "24x36": 150, "20x30": 120, "16x24": 70 },
       Acrylic: { "20x40": 180, "24x36": 130, "20x30": 100, "16x24": 60 },
@@ -180,7 +197,12 @@
       return required.every(f => val(f));
     }
 
-    paypal.Buttons({
+    function renderPayPalButtons() {
+      if (!window.paypal || !window.paypal.Buttons) {
+        throw new Error('PayPal SDK not available');
+      }
+
+      window.paypal.Buttons({
       createOrder: function(data, actions) {
         if (!validateShipping()) {
           alert('Please fill in all required shipping address fields.');
@@ -247,6 +269,7 @@
         alert('There was a problem processing the payment. Please try again.');
       }
     }).render('#paypal-button-container');
+    }
   </script>
 </body>
 </html>
