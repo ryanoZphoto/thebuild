@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wild West Wall Art</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Wild West Wall Art</h1>
+    <p>Metal, Acrylic and Canvas Prints</p>
+  </header>
+
+  <section id="gallery">
+    <h2>Gallery</h2>
+    <div class="grid">
+      <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=400&q=80" alt="Desert landscape">
+      <img src="https://images.unsplash.com/photo-1519682337058-a94d519337bc?auto=format&fit=crop&w=400&q=80" alt="Cactus sunset">
+      <img src="https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=400&q=80" alt="Horses running">
+      <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=400&q=80" alt="Western canyon">
+    </div>
+  </section>
+
+  <section id="pricing">
+    <h2>Pricing</h2>
+    <div class="pricing">
+      <h3>Metallic</h3>
+      <ul>
+        <li>20x40&quot; - $220</li>
+        <li>24x36&quot; - $150</li>
+        <li>20x30&quot; - $120</li>
+        <li>16x24&quot; - $70</li>
+      </ul>
+      <h3>Acrylic</h3>
+      <ul>
+        <li>20x40&quot; - $180</li>
+        <li>24x36&quot; - $130</li>
+        <li>20x30&quot; - $100</li>
+        <li>16x24&quot; - $60</li>
+      </ul>
+      <h3>Canvas</h3>
+      <ul>
+        <li>20x40&quot; - $180</li>
+        <li>24x36&quot; - $130</li>
+        <li>20x30&quot; - $100</li>
+        <li>16x24&quot; - $60</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="order">
+    <h2>Place an Order</h2>
+    <form name="order" method="POST" data-netlify="true">
+      <input type="hidden" name="form-name" value="order">
+      <p>
+        <label>Name:<br>
+          <input type="text" name="name" required>
+        </label>
+      </p>
+      <p>
+        <label>Email:<br>
+          <input type="email" name="email" required>
+        </label>
+      </p>
+      <p>
+        <label>Finish:<br>
+          <select name="finish" required>
+            <option value="Metallic">Metallic</option>
+            <option value="Acrylic">Acrylic</option>
+            <option value="Canvas">Canvas</option>
+          </select>
+        </label>
+      </p>
+      <p>
+        <label>Size:<br>
+          <select name="size" required>
+            <option value="20x40">20x40"</option>
+            <option value="24x36">24x36"</option>
+            <option value="20x30">20x30"</option>
+            <option value="16x24">16x24"</option>
+          </select>
+        </label>
+      </p>
+      <p>
+        <label>Message:<br>
+          <textarea name="message"></textarea>
+        </label>
+      </p>
+      <p>
+        <button type="submit">Submit</button>
+      </p>
+    </form>
+  </section>
+
+  <footer>
+    <p>&copy; 2024 Wild West Wall Art</p>
+  </footer>
+</body>
+</html>
