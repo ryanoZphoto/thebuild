@@ -87,6 +87,45 @@
           <input type="number" name="quantity" value="1" min="1" step="1">
         </label>
       </p>
+      
+      <h3>Shipping Address</h3>
+      <p>
+        <label>Full Name:<br>
+          <input type="text" name="shipping_name" required>
+        </label>
+      </p>
+      <p>
+        <label>Address Line 1:<br>
+          <input type="text" name="shipping_address_line_1" required>
+        </label>
+      </p>
+      <p>
+        <label>Address Line 2 (Optional):<br>
+          <input type="text" name="shipping_address_line_2">
+        </label>
+      </p>
+      <p>
+        <label>City:<br>
+          <input type="text" name="shipping_city" required>
+        </label>
+      </p>
+      <p>
+        <label>State:<br>
+          <input type="text" name="shipping_state" required placeholder="e.g., CA">
+        </label>
+      </p>
+      <p>
+        <label>Postal Code:<br>
+          <input type="text" name="shipping_postal_code" required>
+        </label>
+      </p>
+      <p>
+        <label>Country:<br>
+          <select name="shipping_country" required>
+            <option value="US">United States</option>
+          </select>
+        </label>
+      </p>
       <p>
 
         <label>Message:<br>
@@ -104,8 +143,7 @@
     <p>&copy; 2024 Wild West Wall Art</p>
   </footer>
   
-  <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD&buyer-country=US"></script>
-  <script src="https://www.paypal.com/sdk/js?client-id=AQzQReGx2gCRwD7kWOFi5ntaDSGbIHcheIeW9fJ0gJHV9onPhjDuD6EjgVXASJIJVe6L3LC84kOboE28&currency=USD&buyer-country=US"></script>
+  <script src="https://www.paypal.com/sdk/js?client-id=AQzQReGx2gCRwD7kWOFi5ntaDSGbIHcheIeW9fJ0gJHV9onPhjDuD6EjgVXASJIJVe6L3LC84kOboE28&currency=USD&buyer-country=US&intent=CAPTURE&components=buttons&enable-funding=card"></script>
   <script>
   const prices = {
     Metallic: { "20x40": 220, "24x36": 150, "20x30": 120, "16x24": 70 },
@@ -136,10 +174,28 @@
 
   paypal.Buttons({
     createOrder: function(data, actions) {
+      // Validate shipping fields before creating order
+      const shippingName = document.querySelector('input[name="shipping_name"]').value.trim();
+      const shippingAddressLine1 = document.querySelector('input[name="shipping_address_line_1"]').value.trim();
+      const shippingCity = document.querySelector('input[name="shipping_city"]').value.trim();
+      const shippingState = document.querySelector('input[name="shipping_state"]').value.trim();
+      const shippingPostalCode = document.querySelector('input[name="shipping_postal_code"]').value.trim();
+      const shippingCountry = document.querySelector('select[name="shipping_country"]').value;
+      
+      if (!shippingName || !shippingAddressLine1 || !shippingCity || !shippingState || !shippingPostalCode) {
+        alert('Please fill in all required shipping address fields.');
+        return Promise.reject(new Error('Missing required shipping information'));
+      }
+      
       const { itemPrice, quantity, total } = updateTotal();
       const finish = finishSelect.value;
       const size = sizeSelect.value;
+      
+      // Optional address line 2
+      const shippingAddressLine2 = document.querySelector('input[name="shipping_address_line_2"]').value.trim();
+      
       return actions.order.create({
+        intent: 'CAPTURE',
         purchase_units: [{
           amount: {
             value: total.toFixed(2),
@@ -153,10 +209,24 @@
             name: `${finish} ${size}" Print`,
             unit_amount: { currency_code: 'USD', value: itemPrice.toFixed(2) },
             quantity: quantity.toString()
-          }]
+          }],
+          shipping: {
+            name: {
+              full_name: shippingName
+            },
+            address: {
+              address_line_1: shippingAddressLine1,
+              address_line_2: shippingAddressLine2 || undefined,
+              admin_area_2: shippingCity,
+              admin_area_1: shippingState,
+              postal_code: shippingPostalCode,
+              country_code: shippingCountry
+            }
+          }
         }],
         application_context: {
-          shipping_preference: 'GET_FROM_FILE'
+          shipping_preference: 'SET_PROVIDED_ADDRESS',
+          user_action: 'PAY_NOW'
         }
       });
     },
@@ -165,6 +235,10 @@
         document.querySelector('form[name="order"]').submit();
         window.location.href = 'thankyou.html';
       });
+    },
+    onError: function(err) {
+      console.error('PayPal Checkout Error:', err);
+      alert('There was an error processing your payment. Please try again or contact support.');
     }
   }).render('#paypal-button-container');
   </script>
