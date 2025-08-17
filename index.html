@@ -145,7 +145,7 @@
   <script>
     (function loadPayPalSdk(){
       const isLocal = ['localhost','127.0.0.1'].includes(location.hostname);
-      const LIVE_CLIENT_ID = 'REPLACE_WITH_LIVE_PAYPAL_CLIENT_ID';
+      const LIVE_CLIENT_ID = 'AQd13IXA8JnFCvy9aBAeGVGfUG0_59RQXKth9-1XclCjPAKkRj_qNfiSCozvZfR31vDqkzqs3u-9v3Yy';
       const clientId = isLocal ? 'sb' : LIVE_CLIENT_ID;
       const url = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(clientId)}&currency=USD&intent=CAPTURE&components=buttons&enable-funding=card&commit=true`;
       const s = document.createElement('script');
