@@ -8,7 +8,7 @@ Static site for Wild West Wall Art showcasing metal, acrylic, and canvas prints 
 Open `index.html` in a browser to view the site locally.
 
 
-Replace `YOUR_PAYPAL_CLIENT_ID` in `index.html` with a live client ID from your PayPal Business account.
+Replace `REPLACE_WITH_LIVE_PAYPAL_CLIENT_ID` in `index.html` with a live client ID from your PayPal Business account.
 
 ## Deployment
 
