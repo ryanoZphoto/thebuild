@@ -90,6 +90,18 @@ section {
   margin-top: .5rem;
 }
 
+/* Stepper and options */
+.steps { display:flex; gap:.5rem; justify-content:center; margin: 1rem 0; }
+.step { background:#2b2b2b; color:#fff; border:none; padding:.5rem .75rem; border-radius:999px; font-weight:600; opacity:.6; }
+.step.current { opacity:1; background:#ffb703; color:#1d1d1f; }
+.panel { max-width: 720px; margin: 0 auto 1rem; }
+.options { display:flex; flex-wrap:wrap; gap:.5rem; }
+.option { padding:.5rem .75rem; border:1px solid #d0d0d0; border-radius:8px; background:#fff; cursor:pointer; }
+.option.selected { border-color:#ffb703; box-shadow: 0 0 0 2px rgba(255,183,3,.25); }
+.qty-row { margin-top:.5rem; }
+.grid-2 { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap:.75rem; }
+.visually-hidden { position:absolute !important; height:1px; width:1px; overflow:hidden; clip:rect(1px,1px,1px,1px); white-space:nowrap; }
+
 /* Navigation (new) */
 .nav {
   position: sticky;

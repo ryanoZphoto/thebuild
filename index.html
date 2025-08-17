@@ -37,12 +37,7 @@
 
   <section id="gallery">
     <h2>Gallery</h2>
-    <div class="grid">
-      <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=400&q=80" alt="Desert landscape">
-      <img src="https://images.unsplash.com/photo-1519682337058-a94d519337bc?auto=format&fit=crop&w=400&q=80" alt="Cactus sunset">
-      <img src="https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=400&q=80" alt="Horses running">
-      <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=400&q=80" alt="Western canyon">
-    </div>
+    <div class="grid" id="gallery-grid"></div>
     <p class="selected-display">Selected photo: <strong id="selected-title">None</strong></p>
   </section>
 
@@ -234,8 +229,9 @@
       return required.every(f => val(f));
     }
 
-    // Gallery selection
-    const galleryImages = Array.from(document.querySelectorAll('#gallery .grid img'));
+    // Build gallery dynamically from folder list
+    const galleryGrid = document.getElementById('gallery-grid');
+    const galleryImages = [];
     const selectedTitleEl = document.getElementById('selected-title');
     const photoTitleInput = document.querySelector('input[name="photo_title"]');
     function selectPhoto(img) {
@@ -244,12 +240,41 @@
       if (selectedTitleEl) selectedTitleEl.textContent = title;
       if (photoTitleInput) photoTitleInput.value = title;
     }
-    galleryImages.forEach(img => {
-      img.loading = 'lazy';
-      img.decoding = 'async';
-      img.addEventListener('click', () => selectPhoto(img));
-    });
-    if (galleryImages.length) selectPhoto(galleryImages[0]);
+    (function initGallery(){
+      const files = [
+        '20x30costco.jpg','abstract.jpg','antelopecanyon.jpg','buffalo.jpg','church.jpg','edited-4.jpg','hvaasupai.jpg','monument costco.jpg','rainbowstorm.jpg','sedona-moon.jpg','superstitionmtn.png','weevers needle 2030.jpg'
+      ];
+      files.forEach(file => {
+        const src = `gallery_images/${file}`;
+        const title = file.replace(/\.[^.]+$/, '').replace(/[-_]+/g,' ').replace(/\b\w/g, m => m.toUpperCase());
+        const img = new Image();
+        img.src = src;
+        img.alt = title;
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        img.addEventListener('click', () => selectPhoto(img));
+        galleryImages.push(img);
+        galleryGrid.appendChild(img);
+      });
+      if (galleryImages.length) selectPhoto(galleryImages[0]);
+    })();
+
+    // Stepper: finish and size pretty buttons synced with selects
+    function syncOptionGroup(containerId, selectEl) {
+      const container = document.getElementById(containerId);
+      if (!container || !selectEl) return;
+      container.addEventListener('click', (e) => {
+        const btn = e.target.closest('.option');
+        if (!btn) return;
+        container.querySelectorAll('.option').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        const value = btn.getAttribute('data-value');
+        selectEl.value = value;
+        updateTotal();
+      });
+    }
+    syncOptionGroup('finish-options', finishSelect);
+    syncOptionGroup('size-options', sizeSelect);
 
     function renderPayPalButtons() {
       if (!window.paypal || !window.paypal.Buttons) {
