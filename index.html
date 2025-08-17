@@ -83,23 +83,22 @@
         </label>
       </p>
       <p>
-        <label>Quantity:<br>
-          <input type="number" name="quantity" min="1" value="1">
-        </label>
-      </p>
-      <p>
+
         <label>Message:<br>
           <textarea name="message"></textarea>
         </label>
       </p>
+
       <p id="total"></p>
       <div id="paypal-button-container"></div>
+
     </form>
   </section>
 
   <footer>
     <p>&copy; 2024 Wild West Wall Art</p>
   </footer>
+  
   <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD&buyer-country=US"></script>
   <script>
   const prices = {
@@ -163,5 +162,3 @@
     }
   }).render('#paypal-button-container');
   </script>
-</body>
-</html>

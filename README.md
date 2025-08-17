@@ -1,10 +1,12 @@
 # Wild West Wall Art
 
+
 Static site for Wild West Wall Art showcasing metal, acrylic, and canvas prints with PayPal checkout.
 
 ## Development
 
 Open `index.html` in a browser to view the site locally.
+
 
 Replace `YOUR_PAYPAL_CLIENT_ID` in `index.html` with a live client ID from your PayPal Business account.
 
