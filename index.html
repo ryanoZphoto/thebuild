@@ -35,10 +35,9 @@
     </div>
   </section>
 
-  <section id="gallery" class="hidden">
+  <section id="gallery">
     <h2>Gallery</h2>
-    <div class="grid" id="gallery-grid"></div>
-    <p class="selected-display">Selected photo: <strong id="selected-title">None</strong></p>
+    <div class="masonry-grid" id="gallery-grid"></div>
   </section>
 
   <section id="pricing" class="hidden">
@@ -247,19 +246,63 @@
     // Build gallery dynamically from folder list
     const galleryGrid = document.getElementById('gallery-grid');
     const galleryImages = [];
-    const selectedTitleEl = document.getElementById('selected-title');
     const photoTitleInput = document.querySelector('input[name="photo_title"]');
-    function selectPhoto(img) {
-      galleryImages.forEach(i => i.classList.toggle('selected', i === img));
-      const title = img.getAttribute('alt') || 'Photo';
-      if (selectedTitleEl) selectedTitleEl.textContent = title;
-      if (photoTitleInput) photoTitleInput.value = title;
+
+    // Lightbox elements
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox';
+    lightbox.innerHTML = `
+      <button class="lightbox-close" aria-label="Close">×</button>
+      <button class="lightbox-prev" aria-label="Previous">‹</button>
+      <button class="lightbox-next" aria-label="Next">›</button>
+      <img class="lightbox-img" src="" alt="">
+    `;
+    document.body.appendChild(lightbox);
+
+    let currentIndex = -1;
+
+    function openLightbox(index) {
+      currentIndex = index;
+      const img = galleryImages[index];
+      lightbox.querySelector('.lightbox-img').src = img.src;
+      lightbox.querySelector('.lightbox-img').alt = img.alt;
+      lightbox.style.display = 'flex';
+      selectPhoto(img); // Integrate with existing selection
     }
+
+    function closeLightbox() {
+      lightbox.style.display = 'none';
+    }
+
+    function showPrev() {
+      currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+      openLightbox(currentIndex);
+    }
+
+    function showNext() {
+      currentIndex = (currentIndex + 1) % galleryImages.length;
+      openLightbox(currentIndex);
+    }
+
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox || e.target.classList.contains('lightbox-close')) closeLightbox();
+    });
+    lightbox.querySelector('.lightbox-prev').addEventListener('click', showPrev);
+    lightbox.querySelector('.lightbox-next').addEventListener('click', showNext);
+
+    // Keyboard nav
+    document.addEventListener('keydown', (e) => {
+      if (lightbox.style.display === 'none') return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') showPrev();
+      if (e.key === 'ArrowRight') showNext();
+    });
+
     (function initGallery(){
       const files = [
         '20x30costco.jpg','abstract.jpg','antelopecanyon.jpg','buffalo.jpg','church.jpg','edited-4.jpg','hvaasupai.jpg','monument costco.jpg','rainbowstorm.jpg','sedona-moon.jpg','superstitionmtn.png','weevers needle 2030.jpg'
       ];
-      files.forEach(file => {
+      files.forEach((file, index) => {
         const src = `gallery_images/${file}`;
         const title = file.replace(/\.[^.]+$/, '').replace(/[-_]+/g,' ').replace(/\b\w/g, m => m.toUpperCase());
         const img = new Image();
@@ -267,7 +310,9 @@
         img.alt = title;
         img.loading = 'lazy';
         img.decoding = 'async';
-        img.addEventListener('click', () => selectPhoto(img));
+        img.classList.add('gallery-img');
+        img.addEventListener('load', () => img.classList.add('loaded'));
+        img.addEventListener('click', () => openLightbox(index));
         galleryImages.push(img);
         galleryGrid.appendChild(img);
       });
@@ -362,6 +407,9 @@
       onError: function(err) {
         console.error('PayPal Buttons error', err);
         alert('There was a problem processing the payment. Please try again.');
+      },
+      onInit: function(data, actions) {
+        console.log = function() {}; // Temporary suppress (remove if not needed)
       }
     }).render('#paypal-button-container');
     }
