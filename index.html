@@ -18,9 +18,7 @@
       </a>
       <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">☰</button>
       <ul id="nav-menu" class="nav-links">
-        <li><a href="#gallery">Gallery</a></li>
-        <li><a href="#pricing">Pricing</a></li>
-        <li><a href="#order">Order</a></li>
+        <li><a href="#order" data-open-order>Order</a></li>
         <li><a href="mailto:ryan@ryanosmunphoto.com">Contact</a></li>
       </ul>
     </div>
@@ -33,17 +31,17 @@
     <div class="hero-overlay">
       <h1>Iconic Western Landscapes</h1>
       <p>Premium metal, acrylic, and canvas prints.</p>
-      <a class="cta" href="#order">Order a Print</a>
+      <a class="cta" href="#order" data-open-order>Order a Print</a>
     </div>
   </section>
 
-  <section id="gallery">
+  <section id="gallery" class="hidden">
     <h2>Gallery</h2>
     <div class="grid" id="gallery-grid"></div>
     <p class="selected-display">Selected photo: <strong id="selected-title">None</strong></p>
   </section>
 
-  <section id="pricing">
+  <section id="pricing" class="hidden">
     <h2>Pricing</h2>
     <div class="pricing">
       <h3>Metallic</h3>
@@ -70,9 +68,11 @@
     </div>
   </section>
 
-  <section id="order">
-    <h2>Place an Order</h2>
-    <form name="order" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thankyou.html">
+  <section id="order" class="modal" aria-hidden="true">
+    <div class="modal-content">
+      <button type="button" class="modal-close" aria-label="Close">×</button>
+      <h2>Place an Order</h2>
+      <form name="order" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thankyou.html">
       <input type="hidden" name="form-name" value="order">
       <p style="display:none">
         <label>Don’t fill this out: <input name="bot-field"></label>
@@ -156,7 +156,8 @@
       <input type="hidden" name="paypal_order_id">
       <input type="hidden" name="paypal_payer_email">
       <div id="paypal-button-container"></div>
-    </form>
+      </form>
+    </div>
   </section>
 
   <footer>
@@ -193,6 +194,18 @@
         alert('Unable to load PayPal. Please refresh or try again later.');
       };
       document.head.appendChild(s);
+    })();
+
+    // Open/close modal for order
+    (function(){
+      const modal = document.getElementById('order');
+      const opens = document.querySelectorAll('[data-open-order]');
+      const closeBtn = document.querySelector('.modal-close');
+      const open = (e) => { if (e) e.preventDefault(); modal.setAttribute('aria-hidden','false'); };
+      const close = () => modal.setAttribute('aria-hidden','true');
+      opens.forEach(a => a.addEventListener('click', open));
+      if (closeBtn) closeBtn.addEventListener('click', close);
+      modal?.addEventListener('click', (e) => { if (e.target === modal) close(); });
     })();
 
     const prices = {
