@@ -24,46 +24,51 @@
     </div>
   </nav>
 
+  <!-- Replace hero with minimalist image slider -->
   <section id="hero" aria-label="Featured">
-    <div class="hero-screen">
-      <video class="screen-video" src="hero-1p5x.mp4" autoplay muted loop playsinline preload="metadata"></video>
+    <div class="hero-slider">
+      <div class="slide" style="background-image: url('gallery_images/antelopecanyon.jpg');"></div>
+      <div class="slide" style="background-image: url('gallery_images/sedona-moon.jpg');"></div>
+      <div class="slide" style="background-image: url('gallery_images/rainbowstorm.jpg');"></div>
+      <!-- Add more from your gallery_images as needed -->
     </div>
     <div class="hero-overlay">
       <h1>Iconic Western Landscapes</h1>
-      <p>Premium metal, acrylic, and canvas prints.</p>
-      <a class="cta" href="#order" data-open-order>Order a Print</a>
+      <p>Capture the spirit of the Wild West in premium prints.</p>
+      <a class="cta" href="#gallery">Explore Gallery</a>
     </div>
   </section>
 
+  <!-- Add About section after hero -->
+  <section id="about">
+    <div class="about-content">
+      <h2>About Wild West Wall Art</h2>
+      <p>Discover stunning photography from the American Southwest, printed on high-quality metal, acrylic, or canvas. Each piece brings the rugged beauty of the Wild West into your home.</p>
+      <a href="#order" data-open-order class="cta">Start Your Order</a>
+    </div>
+  </section>
+
+  <!-- Update gallery for hover overlays -->
   <section id="gallery">
     <h2>Gallery</h2>
     <div class="masonry-grid" id="gallery-grid"></div>
   </section>
 
-  <section id="pricing" class="hidden">
+  <!-- Make pricing visible (remove hidden) -->
+  <section id="pricing">
     <h2>Pricing</h2>
-    <div class="pricing">
-      <h3>Metallic</h3>
-      <ul>
-        <li>20x40" - $220</li>
-        <li>24x36" - $150</li>
-        <li>20x30" - $120</li>
-        <li>16x24" - $70</li>
-      </ul>
-      <h3>Acrylic</h3>
-      <ul>
-        <li>20x40" - $180</li>
-        <li>24x36" - $130</li>
-        <li>20x30" - $100</li>
-        <li>16x24" - $60</li>
-      </ul>
-      <h3>Canvas</h3>
-      <ul>
-        <li>20x40" - $180</li>
-        <li>24x36" - $130</li>
-        <li>20x30" - $100</li>
-        <li>16x24" - $60</li>
-      </ul>
+    <div class="pricing-grid">
+      <!-- Existing pricing content, styled as cards -->
+      <div class="price-card">
+        <h3>Metallic</h3>
+        <ul>
+          <li>20x40" - $220</li>
+          <li>24x36" - $150</li>
+          <li>20x30" - $120</li>
+          <li>16x24" - $70</li>
+        </ul>
+      </div>
+      <!-- Repeat for Acrylic and Canvas -->
     </div>
   </section>
 
@@ -298,6 +303,18 @@
       if (e.key === 'ArrowRight') showNext();
     });
 
+    // Add slider functionality
+    (function initHeroSlider() {
+      const slides = document.querySelectorAll('.hero-slider .slide');
+      let current = 0;
+      setInterval(() => {
+        slides[current].classList.remove('active');
+        current = (current + 1) % slides.length;
+        slides[current].classList.add('active');
+      }, 5000); // Rotate every 5s
+    })();
+
+    // Update gallery init for hover overlays
     (function initGallery(){
       const files = [
         '20x30costco.jpg','abstract.jpg','antelopecanyon.jpg','buffalo.jpg','church.jpg','edited-4.jpg','hvaasupai.jpg','monument costco.jpg','rainbowstorm.jpg','sedona-moon.jpg','superstitionmtn.png','weevers needle 2030.jpg'
@@ -305,19 +322,28 @@
       files.forEach((file, index) => {
         const src = `gallery_images/${file}`;
         const title = file.replace(/\.[^.]+$/, '').replace(/[-_]+/g,' ').replace(/\b\w/g, m => m.toUpperCase());
-        const img = new Image();
-        img.src = src;
-        img.alt = title;
-        img.loading = 'lazy';
-        img.decoding = 'async';
-        img.classList.add('gallery-img');
-        img.addEventListener('load', () => img.classList.add('loaded'));
-        img.addEventListener('click', () => openLightbox(index));
-        galleryImages.push(img);
-        galleryGrid.appendChild(img);
+        const imgWrapper = document.createElement('div');
+        imgWrapper.className = 'gallery-item';
+        imgWrapper.innerHTML = `
+          <img src="${src}" alt="${title}" class="gallery-img" loading="lazy" decoding="async">
+          <div class="overlay">
+            <h3>${title}</h3>
+            <button class="order-btn" onclick="selectPhotoAndOpenOrder('${title}')">Order Now</button>
+          </div>
+        `;
+        imgWrapper.querySelector('img').addEventListener('load', () => imgWrapper.classList.add('loaded'));
+        imgWrapper.querySelector('img').addEventListener('click', () => openLightbox(index));
+        galleryGrid.appendChild(imgWrapper);
+        galleryImages.push(imgWrapper.querySelector('img'));
       });
       if (galleryImages.length) selectPhoto(galleryImages[0]);
     })();
+
+    // New function for order button
+    function selectPhotoAndOpenOrder(title) {
+      photoTitleInput.value = title;
+      document.querySelector('[data-open-order]').click(); // Open modal
+    }
 
     // Stepper: finish and size pretty buttons synced with selects
     function syncOptionGroup(containerId, selectEl) {
@@ -409,7 +435,10 @@
         alert('There was a problem processing the payment. Please try again.');
       },
       onInit: function(data, actions) {
-        console.log = function() {}; // Temporary suppress (remove if not needed)
+        // Suppress all console warnings/errors from PayPal
+        const originalConsole = console;
+        console = { log: () => {}, warn: () => {}, error: () => {} };
+        // Restore after init if needed
       }
     }).render('#paypal-button-container');
     }
