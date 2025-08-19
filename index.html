@@ -321,26 +321,36 @@
 
     // Update initGallery to create shelf items (replace existing initGallery)
     (function initGallery(){
-      const files = [
-        'sedona-moon.jpg', 'antelopecanyon.jpg', 'rainbowstorm.jpg', 'buffalo.jpg', 'hvaasupai.jpg', 'abstract.jpg' // Using some of your images; add more as needed
-      ];
-      const itemsContainer = document.querySelector('.items');
-      files.forEach((file, index) => {
-        const src = `gallery_images/${file}`;
-        const title = file.replace(/\.[^.]+$/, '').replace(/[-_]+/g,' ').replace(/\b\w/g, m => m.toUpperCase());
-        const item = document.createElement('div');
-        item.className = 'shelf-item';
-        item.style.transform = `rotateY(${index % 2 === 0 ? -5 : 5}deg) translateZ(20px)`;
-        item.innerHTML = `<img src="${src}" alt="${title}" class="canvas-img">`;
-        item.addEventListener('click', () => {
-          window.location.href = `photo-detail.html?img=${file}`;
-        }); // Replace openLightbox if desired, or keep both
-        item.addEventListener('mouseover', () => item.style.transform += ' scale(1.05) translateY(-10px)');
-        item.addEventListener('mouseout', () => item.style.transform = `rotateY(${index % 2 === 0 ? -5 : 5}deg) translateZ(20px)`);
-        itemsContainer.appendChild(item);
-        galleryImages.push(item.querySelector('img'));
-      });
-      if (galleryImages.length) selectPhoto(galleryImages[0]);
+      fetch('gallery-list.json')
+        .then(response => response.json())
+        .then(data => {
+          const files = data.images || [];
+          if (files.length === 0) {
+            galleryGrid.innerHTML = '<p>No images available—add some to gallery_images/ and redeploy!</p>';
+            return;
+          }
+          const itemsContainer = document.querySelector('.items');
+          files.forEach((file, index) => {
+            const src = `gallery_images/${file}`;
+            const title = file.replace(/\.[^.]+$/, '').replace(/[-_]+/g,' ').replace(/\b\w/g, m => m.toUpperCase());
+            const item = document.createElement('div');
+            item.className = 'shelf-item';
+            item.style.transform = `rotateY(${index % 2 === 0 ? -5 : 5}deg) translateZ(20px)`;
+            item.innerHTML = `<img src="${src}" alt="${title}" class="canvas-img">`;
+            item.addEventListener('click', () => {
+              window.location.href = `photo-detail.html?img=${file}`;
+            }); // Replace openLightbox if desired, or keep both
+            item.addEventListener('mouseover', () => item.style.transform += ' scale(1.05) translateY(-10px)');
+            item.addEventListener('mouseout', () => item.style.transform = `rotateY(${index % 2 === 0 ? -5 : 5}deg) translateZ(20px)`);
+            itemsContainer.appendChild(item);
+            galleryImages.push(item.querySelector('img'));
+          });
+          if (galleryImages.length) selectPhoto(galleryImages[0]);
+        })
+        .catch(err => {
+          console.error('Error loading gallery list:', err);
+          galleryGrid.innerHTML = '<p>Error loading gallery—please check console.</p>';
+        });
     })();
 
     // New function for order button
