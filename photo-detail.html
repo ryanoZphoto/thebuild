@@ -26,25 +26,44 @@
 
   <script>
     const urlParams = new URLSearchParams(window.location.search);
-    const imgFile = urlParams.get('img');
-    const imgSrc = `gallery_images/${imgFile}`;
-    const title = imgFile.replace(/\.[^.]+$/, '').replace(/[-_]+/g,' ').replace(/\b\w/g, m => m.toUpperCase());
+    const imgFile = urlParams.get('img'); // e.g., 'sedona-moon.jpg'
+    const baseName = imgFile.replace(/\.[^.]+$/, ''); // e.g., 'sedona-moon'
+    const originalSrc = `gallery_images/${imgFile}`;
 
-    document.getElementById('photo-title').textContent = title;
+    document.getElementById('photo-title').textContent = baseName.replace(/[-_]+/g,' ').replace(/\b\w/g, m => m.toUpperCase());
+
     const previewImg = document.getElementById('preview-img');
-    previewImg.src = imgSrc;
-    previewImg.alt = title;
+    previewImg.src = originalSrc; // Default to original
+    previewImg.alt = 'Photo Preview';
+
+    function loadFinishImage(finish) {
+      const finishSrc = `${finish}_previews/${baseName}_${finish}.jpg`;
+      previewImg.classList.add('loading'); // Add loading class for animation
+
+      const img = new Image();
+      img.src = finishSrc;
+      img.onload = () => {
+        previewImg.src = finishSrc;
+        previewImg.classList.remove('loading', 'error');
+      };
+      img.onerror = () => {
+        previewImg.src = originalSrc; // Fallback
+        previewImg.classList.remove('loading');
+        previewImg.classList.add('error'); // Style for fallback notice
+        console.warn(`Finish image not found: ${finishSrc}. Using original.`);
+      };
+    }
 
     document.querySelectorAll('.finish-tabs button').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.finish-tabs button').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         const finish = btn.dataset.finish;
-        previewImg.className = finish; // Apply CSS class for simulation
+        loadFinishImage(finish);
       });
     });
 
-    // Set default
+    // Set default to canvas
     document.querySelector('[data-finish="canvas"]').click();
   </script>
 </body>
