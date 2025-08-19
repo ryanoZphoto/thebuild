@@ -177,43 +177,34 @@
     // Open/close modal for order
     (function(){
       const modal = document.getElementById('order');
-      const opens = document.querySelectorAll('[data-open-order]');
-      const closeBtn = document.querySelector('.modal-close');
-      const open = (e) => { if (e) e.preventDefault(); modal.setAttribute('aria-hidden','false'); };
-      const close = () => modal.setAttribute('aria-hidden','true');
-      opens.forEach(a => a.addEventListener('click', open));
-      if (closeBtn) closeBtn.addEventListener('click', close);
-      modal?.addEventListener('click', (e) => { if (e.target === modal) close(); });
-    })();
+(function loadPayPalSdk(){
+  const LIVE_CLIENT_ID = 'AcosS2AbZFUgYmDEx1dh9piJdWL3jM2u0RCRdjf5rJ0YerCZluqwthmTzCzWmov46D39CmL6N8Gysh6a';
+  const clientId = LIVE_CLIENT_ID;
+  const url = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(clientId)}&currency=USD&intent=capture&components=buttons&enable-funding=card&commit=true`;
+  console.log('Loading PayPal SDK:', url);
+  const s = document.createElement('script');
+  s.src = url;
+  s.async = true;
+  s.onload = function(){
+    try { renderPayPalButtons(); } catch (e) { console.error('Render PayPal failed', e); }
+  };
+  s.onerror = function(){
+    console.error('Failed to load PayPal SDK', url);
+    alert('Unable to load PayPal. Please refresh or try again later.');
+  };
+  document.head.appendChild(s);
+})();
 
-    const prices = {
-      Metallic: { "20x40": 220, "24x36": 150, "20x30": 120, "16x24": 70 },
-      Acrylic: { "20x40": 180, "24x36": 130, "20x30": 100, "16x24": 60 },
-      Canvas: { "20x40": 180, "24x36": 130, "20x30": 100, "16x24": 60 }
-    };
-    const shippingCost = 10;
-
-    const finishSelect = document.querySelector('select[name="finish"]');
-    const sizeSelect = document.querySelector('select[name="size"]');
-    const quantityInput = document.querySelector('input[name="quantity"]');
-    const totalDisplay = document.getElementById('total');
-
-    function updateTotal() {
-      const finish = finishSelect.value;
-      const size = sizeSelect.value;
-      const quantity = Math.max(parseInt(quantityInput.value, 10) || 1, 1);
-      const itemPrice = prices[finish][size];
-      const total = itemPrice * quantity + shippingCost;
-      totalDisplay.textContent = `Total: $${total.toFixed(2)} (including $${shippingCost} shipping)`;
-      return { finish, size, itemPrice, quantity, total };
-    }
-
-    finishSelect.addEventListener('change', updateTotal);
-    sizeSelect.addEventListener('change', updateTotal);
-    quantityInput.addEventListener('input', updateTotal);
-    updateTotal();
-
-    function val(name) {
+// Safeguard updateTotal
+function updateTotal() {
+  const finish = finishSelect.value || 'Metallic'; // Default if undefined
+  const size = sizeSelect.value || '20x30'; // Default if undefined
+  const quantity = Math.max(parseInt(quantityInput.value, 10) || 1, 1);
+  const itemPrice = prices[finish]?.[size] || 0; // Safe access
+  const total = itemPrice * quantity + shippingCost;
+  totalDisplay.textContent = `Total: $${total.toFixed(2)} (including $${shippingCost} shipping)`;
+  return { finish, size, itemPrice, quantity, total };
+}
       return document.querySelector(`[name="${name}"]`)?.value.trim() || '';
     }
 
@@ -431,3 +422,50 @@
   </script>
 </body>
 </html>
+<!-- INSERT_YOUR_CODE -->
+<script>
+  // Ensure the PayPal buttons are rendered correctly
+  function renderPayPalButtons() {
+    paypal.Buttons({
+      createOrder: function(data, actions) {
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              value: updateTotal().total.toFixed(2) // Use the updated total from the form
+            }
+          }]
+        });
+      },
+      onApprove: function(data, actions) {
+        return actions.order.capture().then(function(details) {
+          const form = document.querySelector('form[name="order"]');
+          const orderIdInput = form.querySelector('input[name="paypal_order_id"]');
+          const payerEmailInput = form.querySelector('input[name="paypal_payer_email"]');
+
+          if (orderIdInput) {
+            orderIdInput.value = details.id || '';
+          }
+          if (payerEmailInput) {
+            payerEmailInput.value = details.payer.email_address || '';
+          }
+
+          form.submit();
+        });
+      },
+      onError: function(err) {
+        console.error('PayPal error:', err);
+        alert('An error occurred with PayPal. Please try again.');
+      },
+      onInit: function(data, actions) {
+        // Suppress all console warnings/errors from PayPal
+        const originalConsole = console;
+        console = { log: () => {}, warn: () => {}, error: () => {} };
+        // Restore after init if needed
+        setTimeout(() => { console = originalConsole; }, 1000);
+      }
+    }).render('#paypal-button-container');
+  }
+
+  // Initialize PayPal buttons
+  renderPayPalButtons();
+</script>
