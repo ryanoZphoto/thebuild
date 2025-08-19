@@ -48,10 +48,15 @@
     </div>
   </section>
 
-  <!-- Update gallery for hover overlays -->
+  <!-- Replace gallery with 3D shelf -->
   <section id="gallery">
     <h2>Gallery</h2>
-    <div class="masonry-grid" id="gallery-grid"></div>
+    <div class="shelf-container">
+      <div class="shelf"></div>
+      <div class="items">
+        <!-- Dynamically add items here in JS -->
+      </div>
+    </div>
   </section>
 
   <!-- Make pricing visible (remove hidden) -->
@@ -314,27 +319,24 @@
       }, 5000); // Rotate every 5s
     })();
 
-    // Update gallery init for hover overlays
+    // Update initGallery to create shelf items (replace existing initGallery)
     (function initGallery(){
       const files = [
-        '20x30costco.jpg','abstract.jpg','antelopecanyon.jpg','buffalo.jpg','church.jpg','edited-4.jpg','hvaasupai.jpg','monument costco.jpg','rainbowstorm.jpg','sedona-moon.jpg','superstitionmtn.png','weevers needle 2030.jpg'
+        'sedona-moon.jpg', 'antelopecanyon.jpg', 'rainbowstorm.jpg', 'buffalo.jpg', 'hvaasupai.jpg', 'abstract.jpg' // Using some of your images; add more as needed
       ];
+      const itemsContainer = document.querySelector('.items');
       files.forEach((file, index) => {
         const src = `gallery_images/${file}`;
         const title = file.replace(/\.[^.]+$/, '').replace(/[-_]+/g,' ').replace(/\b\w/g, m => m.toUpperCase());
-        const imgWrapper = document.createElement('div');
-        imgWrapper.className = 'gallery-item';
-        imgWrapper.innerHTML = `
-          <img src="${src}" alt="${title}" class="gallery-img" loading="lazy" decoding="async">
-          <div class="overlay">
-            <h3>${title}</h3>
-            <button class="order-btn" onclick="selectPhotoAndOpenOrder('${title}')">Order Now</button>
-          </div>
-        `;
-        imgWrapper.querySelector('img').addEventListener('load', () => imgWrapper.classList.add('loaded'));
-        imgWrapper.querySelector('img').addEventListener('click', () => openLightbox(index));
-        galleryGrid.appendChild(imgWrapper);
-        galleryImages.push(imgWrapper.querySelector('img'));
+        const item = document.createElement('div');
+        item.className = 'shelf-item';
+        item.style.transform = `rotateY(${index % 2 === 0 ? -5 : 5}deg) translateZ(20px)`;
+        item.innerHTML = `<img src="${src}" alt="${title}" class="canvas-img">`;
+        item.addEventListener('click', () => openLightbox(index)); // Tie to existing lightbox
+        item.addEventListener('mouseover', () => item.style.transform += ' scale(1.05) translateY(-10px)');
+        item.addEventListener('mouseout', () => item.style.transform = `rotateY(${index % 2 === 0 ? -5 : 5}deg) translateZ(20px)`);
+        itemsContainer.appendChild(item);
+        galleryImages.push(item.querySelector('img'));
       });
       if (galleryImages.length) selectPhoto(galleryImages[0]);
     })();
