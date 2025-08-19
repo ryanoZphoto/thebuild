@@ -332,7 +332,9 @@
         item.className = 'shelf-item';
         item.style.transform = `rotateY(${index % 2 === 0 ? -5 : 5}deg) translateZ(20px)`;
         item.innerHTML = `<img src="${src}" alt="${title}" class="canvas-img">`;
-        item.addEventListener('click', () => openLightbox(index)); // Tie to existing lightbox
+        item.addEventListener('click', () => {
+          window.location.href = `photo-detail.html?img=${file}`;
+        }); // Replace openLightbox if desired, or keep both
         item.addEventListener('mouseover', () => item.style.transform += ' scale(1.05) translateY(-10px)');
         item.addEventListener('mouseout', () => item.style.transform = `rotateY(${index % 2 === 0 ? -5 : 5}deg) translateZ(20px)`);
         itemsContainer.appendChild(item);

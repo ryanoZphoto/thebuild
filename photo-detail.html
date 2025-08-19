@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Photo Detail - Wild West Wall Art</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Nav and other shared elements -->
+
+  <section id="photo-detail">
+    <h1 id="photo-title"></h1>
+    <div class="finish-tabs">
+      <button data-finish="canvas">Canvas</button>
+      <button data-finish="metal">Metal</button>
+      <button data-finish="acrylic">Acrylic</button>
+    </div>
+    <div class="preview-container">
+      <img id="preview-img" src="" alt="Photo Preview">
+    </div>
+    <a href="#order" data-open-order class="cta">Order This Print</a>
+  </section>
+
+  <!-- Existing order modal copied here or linked -->
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const imgFile = urlParams.get('img');
+    const imgSrc = `gallery_images/${imgFile}`;
+    const title = imgFile.replace(/\.[^.]+$/, '').replace(/[-_]+/g,' ').replace(/\b\w/g, m => m.toUpperCase());
+
+    document.getElementById('photo-title').textContent = title;
+    const previewImg = document.getElementById('preview-img');
+    previewImg.src = imgSrc;
+    previewImg.alt = title;
+
+    document.querySelectorAll('.finish-tabs button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.finish-tabs button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const finish = btn.dataset.finish;
+        previewImg.className = finish; // Apply CSS class for simulation
+      });
+    });
+
+    // Set default
+    document.querySelector('[data-finish="canvas"]').click();
+  </script>
+</body>
+</html>
