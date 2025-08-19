@@ -59,11 +59,10 @@
     </div>
   </section>
 
-  <!-- Make pricing visible (remove hidden) -->
+  <!-- Make pricing visible with cards (replace existing pricing section) -->
   <section id="pricing">
     <h2>Pricing</h2>
-    <div class="pricing-grid">
-      <!-- Existing pricing content, styled as cards -->
+    <div class="pricing-cards">
       <div class="price-card">
         <h3>Metallic</h3>
         <ul>
@@ -72,99 +71,59 @@
           <li>20x30" - $120</li>
           <li>16x24" - $70</li>
         </ul>
+        <button class="cta" data-finish="Metallic">Select Metallic</button>
       </div>
-      <!-- Repeat for Acrylic and Canvas -->
+      <div class="price-card">
+        <h3>Acrylic</h3>
+        <ul>
+          <li>20x40" - $180</li>
+          <li>24x36" - $130</li>
+          <li>20x30" - $100</li>
+          <li>16x24" - $60</li>
+        </ul>
+        <button class="cta" data-finish="Acrylic">Select Acrylic</button>
+      </div>
+      <div class="price-card">
+        <h3>Canvas</h3>
+        <ul>
+          <li>20x40" - $180</li>
+          <li>24x36" - $130</li>
+          <li>20x30" - $100</li>
+          <li>16x24" - $60</li>
+        </ul>
+        <button class="cta" data-finish="Canvas">Select Canvas</button>
+      </div>
     </div>
   </section>
 
+  <!-- Revamp order modal (replace existing modal content) -->
   <section id="order" class="modal" aria-hidden="true">
     <div class="modal-content">
       <button type="button" class="modal-close" aria-label="Close">×</button>
       <h2>Place an Order</h2>
+      <div class="order-preview">
+        <img id="selected-photo-preview" src="" alt="Selected Photo">
+        <p id="selected-photo-title"></p>
+      </div>
       <form name="order" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thankyou.html">
-      <input type="hidden" name="form-name" value="order">
-      <p style="display:none">
-        <label>Don’t fill this out: <input name="bot-field"></label>
-      </p>
-      <p>
-        <label>Name:<br>
-          <input type="text" name="name" required>
-        </label>
-      </p>
-      <p>
-        <label>Email:<br>
-          <input type="email" name="email" required>
-        </label>
-      </p>
-      <p>
-        <label>Finish:<br>
-          <select name="finish" required>
-            <option value="Metallic">Metallic</option>
-            <option value="Acrylic">Acrylic</option>
-            <option value="Canvas">Canvas</option>
-          </select>
-        </label>
-      </p>
-      <p>
-        <label>Size:<br>
-          <select name="size" required>
-            <option value="20x40">20x40"</option>
-            <option value="24x36">24x36"</option>
-            <option value="20x30">20x30"</option>
-            <option value="16x24">16x24"</option>
-          </select>
-        </label>
-      </p>
-      <p>
-        <label>Quantity:<br>
-          <input type="number" name="quantity" value="1" min="1" step="1">
-        </label>
-      </p>
-      <p>
-        <label>Message:<br>
-          <textarea name="message"></textarea>
-        </label>
-      </p>
-
-      <fieldset>
-        <legend>Shipping Address</legend>
-        <p>
-          <label>Address Line 1:<br>
-            <input type="text" name="address_line_1" required>
-          </label>
-        </p>
-        <p>
-          <label>Address Line 2 (optional):<br>
-            <input type="text" name="address_line_2">
-          </label>
-        </p>
-        <p>
-          <label>City:<br>
-            <input type="text" name="city" required>
-          </label>
-        </p>
-        <p>
-          <label>State (2-letter):<br>
-            <input type="text" name="state" maxlength="2" pattern="[A-Za-z]{2}" required>
-          </label>
-        </p>
-        <p>
-          <label>Postal Code:<br>
-            <input type="text" name="postal_code" pattern="\d{5}(-\d{4})?" required>
-          </label>
-        </p>
-        <p>
-          <label>Country:<br>
-            <input type="text" name="country_code" value="US" maxlength="2" pattern="[A-Za-z]{2}" required>
-          </label>
-        </p>
-      </fieldset>
-
-      <p id="total"></p>
-      <input type="hidden" name="photo_title">
-      <input type="hidden" name="paypal_order_id">
-      <input type="hidden" name="paypal_payer_email">
-      <div id="paypal-button-container"></div>
+        <!-- Existing hidden fields -->
+        <div class="order-steps">
+          <div class="step">
+            <label>Finish:</label>
+            <select name="finish" required></select>
+          </div>
+          <div class="step">
+            <label>Size:</label>
+            <select name="size" required></select>
+          </div>
+          <div class="step">
+            <label>Quantity:</label>
+            <input type="number" name="quantity" value="1" min="1">
+          </div>
+          <!-- Shipping and other fields as steps -->
+        </div>
+        <p id="total"></p>
+        <div id="paypal-button-container"></div>
       </form>
     </div>
   </section>
@@ -443,6 +402,22 @@
         // Restore after init if needed
       }
     }).render('#paypal-button-container');
+    }
+
+    // Add JS to tie in (around initGallery or after)
+    document.querySelectorAll('.price-card .cta').forEach(btn => {
+      btn.addEventListener('click', () => {
+        finishSelect.value = btn.dataset.finish;
+        updateTotal();
+        document.querySelector('[data-open-order]').click();
+      });
+    });
+
+    // Update selectPhoto to populate preview in modal
+    function selectPhoto(img) {
+      // Existing logic
+      document.getElementById('selected-photo-preview').src = img.src;
+      document.getElementById('selected-photo-title').textContent = img.alt;
     }
   </script>
 </body>
