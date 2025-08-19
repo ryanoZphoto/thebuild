@@ -36,22 +36,49 @@
     previewImg.src = originalSrc; // Default to original
     previewImg.alt = 'Photo Preview';
 
-    function loadFinishImage(finish) {
-      const finishSrc = `${finish}_previews/${baseName}_${finish}.jpg`;
-      previewImg.classList.add('loading'); // Add loading class for animation
+    function loadFinishVariants(finish) {
+      const previewContainer = document.querySelector('.preview-container');
+      previewContainer.innerHTML = ''; // Clear previous
+      previewContainer.classList.add('loading');
 
-      const img = new Image();
-      img.src = finishSrc;
-      img.onload = () => {
-        previewImg.src = finishSrc;
-        previewImg.classList.remove('loading', 'error');
-      };
-      img.onerror = () => {
-        previewImg.src = originalSrc; // Fallback
-        previewImg.classList.remove('loading');
-        previewImg.classList.add('error'); // Style for fallback notice
-        console.warn(`Finish image not found: ${finishSrc}. Using original.`);
-      };
+      // Simulate fetching variants (since static, assume all possible names; in reality, this would need build-time generation for full dynamism, but approximate with attempts)
+      const variants = [];
+      for (let i = 1; i <= 10; i++) { // Check up to 10 variants
+        const variantSrc = `${finish}_previews/${baseName}_${finish}${i ? i : ''}.jpg`; // Flexible: _finish.jpg, _finish1.jpg, etc.
+        const img = new Image();
+        img.src = variantSrc;
+        img.onload = () => variants.push(variantSrc);
+      }
+
+      // Wait a bit for loads, then display
+      setTimeout(() => {
+        previewContainer.classList.remove('loading');
+        if (variants.length === 0) {
+          const img = document.createElement('img');
+          img.src = originalSrc;
+          img.alt = 'Fallback Preview';
+          img.classList.add('error');
+          previewContainer.appendChild(img);
+          return;
+        }
+
+        // Dynamic grid sizing
+        previewContainer.style.gridTemplateColumns = `repeat(${variants.length}, 1fr)`;
+        variants.forEach(src => {
+          const img = document.createElement('img');
+          img.src = src;
+          img.alt = `${finish} Variant`;
+          previewContainer.appendChild(img);
+        });
+
+        // If many (>3), add cycling button
+        if (variants.length > 3) {
+          const nextBtn = document.createElement('button');
+          nextBtn.textContent = 'Next Variant';
+          nextBtn.onclick = () => { /* Cycle logic */ };
+          previewContainer.appendChild(nextBtn);
+        }
+      }, 500); // Give time for image checks
     }
 
     document.querySelectorAll('.finish-tabs button').forEach(btn => {
@@ -59,7 +86,7 @@
         document.querySelectorAll('.finish-tabs button').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         const finish = btn.dataset.finish;
-        loadFinishImage(finish);
+        loadFinishVariants(finish);
       });
     });
 

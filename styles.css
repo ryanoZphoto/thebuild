@@ -272,10 +272,24 @@ button:hover {
 }
 
 /* Preview loading/error styles */
+/* Updated preview container for grid */
 .preview-container {
-  position: relative;
-  min-height: 300px; /* Space for loading */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Dynamic based on count */
+  gap: 1rem;
+  max-width: 800px;
+  margin: 0 auto;
+  min-height: 300px;
 }
+
+.preview-container img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Loading and error as before */
 
 #preview-img.loading {
   opacity: 0.5;
