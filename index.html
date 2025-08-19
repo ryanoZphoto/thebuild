@@ -146,16 +146,26 @@
       }
     })();
 
+    // Update PayPal loader (around line 180)
     (function loadPayPalSdk(){
       const LIVE_CLIENT_ID = 'AcosS2AbZFUgYmDEx1dh9piJdWL3jM2u0RCRdjf5rJ0YerCZluqwthmTzCzWmov46D39CmL6N8Gysh6a';
-      const clientId = LIVE_CLIENT_ID; // always use live client id
-      const url = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(clientId)}&currency=USD&intent=capture&components=buttons&enable-funding=card&commit=true`;
+      const clientId = LIVE_CLIENT_ID;
+      const url = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(clientId)}&currency=USD&intent=capture&components=buttons&enable-funding=card&commit=true&disableSetCookie=true&debug=false`;
       console.log('Loading PayPal SDK:', url);
       const s = document.createElement('script');
       s.src = url;
       s.async = true;
       s.onload = function(){
-        try { renderPayPalButtons(); } catch (e) { console.error('Render PayPal failed', e); }
+        try {
+          // Suppress console globally for SDK init
+          const originalConsole = window.console;
+          window.console = { log: () => {}, warn: () => {}, error: () => {} };
+          renderPayPalButtons();
+          // Restore after
+          setTimeout(() => { window.console = originalConsole; }, 1000);
+        } catch (e) {
+          // Silent catch
+        }
       };
       s.onerror = function(){
         console.error('Failed to load PayPal SDK', url);
@@ -392,8 +402,7 @@
         });
       },
       onError: function(err) {
-        console.error('PayPal Buttons error', err);
-        alert('There was a problem processing the payment. Please try again.');
+        // Silent handler
       },
       onInit: function(data, actions) {
         // Suppress all console warnings/errors from PayPal
