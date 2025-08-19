@@ -188,15 +188,27 @@ button:hover {
   bottom: 10px;
 }
 
+/* Update shelf-item for larger size */
 .shelf-item {
-  width: 120px;
-  height: 180px;
+  width: 250px; /* Larger for better visibility */
+  height: 350px;
   background: #f9f9f9; /* Canvas-like */
   border: 2px solid #d4a373; /* Earthy frame */
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.4); /* Stronger shadow for contrast */
   transform-style: preserve-3d;
   transition: transform 0.3s ease;
   cursor: pointer;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .shelf-item {
+    width: 150px;
+    height: 210px;
+  }
+  .shelf-container {
+    height: 300px; /* Smaller container on mobile */
+  }
 }
 
 .canvas-img {
