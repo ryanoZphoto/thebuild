@@ -188,10 +188,9 @@ button:hover {
   bottom: 10px;
 }
 
-/* Update shelf sizes */
 .shelf-item {
-  width: 250px; /* Larger */
-  height: 350px; /* Taller for canvas feel */
+  width: 120px;
+  height: 180px;
   background: #f9f9f9; /* Canvas-like */
   border: 2px solid #d4a373; /* Earthy frame */
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
@@ -204,54 +203,4 @@ button:hover {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-/* Pricing cards */
-.pricing-cards {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.price-card {
-  background: #fff;
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  text-align: center;
-  width: 250px;
-}
-
-.price-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-}
-
-/* Order modal styles */
-.order-preview {
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
-.order-preview img {
-  max-width: 200px;
-  border-radius: 8px;
-}
-
-.order-steps {
-  display: grid;
-  gap: 1rem;
-}
-
-.step {
-  display: flex;
-  flex-direction: column;
-}
-
-@media (max-width: 768px) {
-  .shelf-item {
-    width: 150px;
-    height: 210px;
-  }
 }
