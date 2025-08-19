@@ -36,23 +36,30 @@
     previewImg.src = originalSrc; // Default to original
     previewImg.alt = 'Photo Preview';
 
+    // Replace the loadFinishVariants function with Promise-based version
     function loadFinishVariants(finish) {
       const previewContainer = document.querySelector('.preview-container');
       previewContainer.innerHTML = ''; // Clear previous
       previewContainer.classList.add('loading');
 
-      // Simulate fetching variants (since static, assume all possible names; in reality, this would need build-time generation for full dynamism, but approximate with attempts)
-      const variants = [];
-      for (let i = 1; i <= 10; i++) { // Check up to 10 variants
-        const variantSrc = `${finish}_previews/${baseName}_${finish}${i ? i : ''}.jpg`; // Flexible: _finish.jpg, _finish1.jpg, etc.
-        const img = new Image();
-        img.src = variantSrc;
-        img.onload = () => variants.push(variantSrc);
+      const variantPromises = [];
+      for (let i = 0; i <= 10; i++) { // Check base and up to 10 variants
+        const suffix = i > 0 ? i : '';
+        const variantSrc = `${finish}_previews/${baseName}_${finish}${suffix}.jpg`;
+        variantPromises.push(
+          new Promise(resolve => {
+            const img = new Image();
+            img.src = variantSrc;
+            img.onload = () => resolve(variantSrc);
+            img.onerror = () => resolve(null);
+          })
+        );
       }
 
-      // Wait a bit for loads, then display
-      setTimeout(() => {
+      Promise.all(variantPromises).then(results => {
+        const variants = results.filter(src => src !== null);
         previewContainer.classList.remove('loading');
+
         if (variants.length === 0) {
           const img = document.createElement('img');
           img.src = originalSrc;
@@ -71,14 +78,14 @@
           previewContainer.appendChild(img);
         });
 
-        // If many (>3), add cycling button
+        // If many (>3), add cycling button (optional; can expand if needed)
         if (variants.length > 3) {
           const nextBtn = document.createElement('button');
           nextBtn.textContent = 'Next Variant';
-          nextBtn.onclick = () => { /* Cycle logic */ };
+          nextBtn.onclick = () => { /* Add cycle logic here if desired */ };
           previewContainer.appendChild(nextBtn);
         }
-      }, 500); // Give time for image checks
+      });
     }
 
     document.querySelectorAll('.finish-tabs button').forEach(btn => {
