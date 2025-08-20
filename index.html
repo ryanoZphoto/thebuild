@@ -7,6 +7,9 @@
   <link rel="stylesheet" href="styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -26,16 +29,11 @@
   </nav>
 
   <!-- Replace hero with minimalist image slider -->
-  <section id="hero" aria-label="Featured">
-    <div class="hero-slider">
-      <div class="slide" style="background-image: url('gallery_images/antelopecanyon.jpg');"></div>
-      <div class="slide" style="background-image: url('gallery_images/sedona-moon.jpg');"></div>
-      <div class="slide" style="background-image: url('gallery_images/rainbowstorm.jpg');"></div>
-      <!-- Add more from your gallery_images as needed -->
-    </div>
-    <div class="hero-overlay">
-      <h1>Iconic Western Landscapes</h1>
-      <p>Capture the spirit of the Wild West in premium prints.</p>
+  <link rel="preload" as="image" href="gallery_images/superstitionmtn.jpg">
+  <section id="hero" class="hero-fixed" aria-label="Featured" style="background-image:url('gallery_images/superstitionmtn.jpg');">
+    <div class="hero-content">
+      <h1 class="hero-title">The American West, in Bold Print</h1>
+      <p class="hero-sub">Premium metal, acrylic, and canvas prints crafted to command the room. Shot on location across the Southwest.</p>
       <a class="cta" href="#gallery">Explore Gallery</a>
     </div>
   </section>
@@ -61,22 +59,7 @@
   </section>
 
   <!-- Make pricing visible (remove hidden) -->
-  <section id="pricing">
-    <h2>Pricing</h2>
-    <div class="pricing-grid">
-      <!-- Existing pricing content, styled as cards -->
-      <div class="price-card">
-        <h3>Metallic</h3>
-        <ul>
-          <li>20x40" - $220</li>
-          <li>24x36" - $150</li>
-          <li>20x30" - $120</li>
-          <li>16x24" - $70</li>
-        </ul>
-      </div>
-      <!-- Repeat for Acrylic and Canvas -->
-    </div>
-  </section>
+  
 
   
 
@@ -85,8 +68,10 @@
   </footer>
 
   <script>
-    // Mobile nav toggle
+    // Mobile nav toggle + overlay-to-solid behavior
     (function(){
+      const nav = document.querySelector('.nav');
+      if (nav) nav.classList.add('nav--overlay');
       const btn = document.querySelector('.nav-toggle');
       const menu = document.getElementById('nav-menu');
       if (btn && menu) {
@@ -95,6 +80,12 @@
           btn.setAttribute('aria-expanded', String(open));
         });
       }
+      window.addEventListener('scroll', () => {
+        const solid = window.scrollY > 10;
+        if (!nav) return;
+        nav.classList.toggle('nav--solid', solid);
+        nav.classList.toggle('nav--overlay', !solid);
+      }, { passive: true });
     })();
 
     // Build gallery dynamically from folder list

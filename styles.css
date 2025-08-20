@@ -1,7 +1,13 @@
-/* Global updates for earthy theme */
+/* Global base (dark theme for landing) */
 body {
-  background: #f8f4f0; /* Soft sand */
-  color: #3d2b1f; /* Deep brown */
+  background: #0a0a0a; /* near-black */
+  color: #f1efe9; /* warm off-white */
+  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+}
+
+h1, h2, h3 {
+  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  color: #f5f3ee;
 }
 
 /* Hero slider */
@@ -21,17 +27,41 @@ body {
 .slide.active {
   opacity: 1;
 }
-.hero-overlay {
-  text-align: center;
-  z-index: 1;
-  /* Existing styles */
+.hero-overlay { text-align:center; z-index:1; }
+
+/* New fixed hero */
+#hero.hero-fixed {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
 }
+#hero.hero-fixed::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.55) 60%, rgba(0,0,0,.8) 100%);
+}
+.hero-content {
+  position: relative;
+  text-align: center;
+  padding: 2rem;
+  max-width: 1000px;
+}
+.hero-title { font-size: clamp(2rem, 6vw, 4rem); line-height: 1.1; margin: 0 0 .5rem; }
+.hero-sub { font-size: clamp(1rem, 2.2vw, 1.25rem); color: #d0ccc3; margin: 0 0 1.25rem; }
+.cta { display:inline-block; padding:.9rem 1.6rem; background:#c4803f; color:#fff; text-decoration:none; font-weight:700; border-radius:999px; box-shadow:0 8px 20px rgba(0,0,0,.35); }
+.cta:hover { filter: brightness(1.05); }
 
 /* About section */
 #about {
   padding: 4rem 2rem;
   text-align: center;
-  background: #e0d8d1; /* Light earth */
+  background: transparent;
+  color: #e8e6e1;
 }
 .about-content {
   max-width: 800px;
@@ -106,6 +136,8 @@ body {
   color: #fff;
   box-shadow: 0 2px 10px rgba(0,0,0,.2);
 }
+.nav.nav--overlay { background: transparent; box-shadow: none; }
+.nav.nav--solid { background: #0d0d0d; box-shadow: 0 2px 10px rgba(0,0,0,.35); }
 .nav-inner {
   max-width: 1200px;
   margin: 0 auto;
