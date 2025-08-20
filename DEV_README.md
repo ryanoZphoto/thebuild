@@ -57,9 +57,9 @@ This document explains the structure of the site, what each file does, and where
   - `loadFinishVariants(finish)` builds a candidate list of preview files and checks them, only rendering those that exist.
     - Folder is `<finish>_previews/`
     - Accepted patterns (any may be used):
-      - `<base>_<finish>.jpg`
-      - `<base>_<finish>1.jpg`, `<base>_<finish>2.jpg`, … up to `10`
-      - `<base>_<finish>_variant.jpg`
+      - `<base>_<finish>.{jpg|jpeg|png}`
+      - `<base>_<finish>1.{jpg|jpeg|png}`, `<base>_<finish>2.{jpg|jpeg|png}`, … up to `10`
+      - `<base>_<finish>_variant.{jpg|jpeg|png}`
     - If none exist, falls back to `gallery_images/<img>`.
   - Adjusts `grid-template-columns` based on number of variants to keep previews large and viewable.
   - The Order button builds a URL to `cart.html` with the selected `finish`.
