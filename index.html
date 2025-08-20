@@ -99,15 +99,19 @@
     // Build gallery dynamically from folder list
     const galleryImages = [];
 
-    // Initialize hero video source once DOM is ready
+    // Initialize hero video with multiple sources for clarity
     (function initHeroVideo(){
       const v = document.querySelector('video.hero-media');
       if (!v) return;
-      const source = document.createElement('source');
-      source.src = 'hero-1p5x.mp4';
-      source.type = 'video/mp4';
-      v.appendChild(source);
-      // Nudge GPU for sharper rendering on some browsers
+      const sources = [
+        { src: 'hero-1p5x.mp4', type: 'video/mp4' },
+        // If you add a higher quality WebM, list it first for capable browsers
+        // { src: 'hero-1p5x.webm', type: 'video/webm' },
+      ];
+      sources.forEach(s => {
+        const el = document.createElement('source');
+        el.src = s.src; el.type = s.type; v.appendChild(el);
+      });
       v.style.transform = 'translateZ(0)';
     })();
 

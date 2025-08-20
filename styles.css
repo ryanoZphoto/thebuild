@@ -7,9 +7,10 @@ body {
 /* Hero (smaller, sharper, faster) */
 #hero {
   position: relative;
-  height: 70vh; /* show more of the video */
-  min-height: 520px;
+  height: 60vh; /* reduce perceived zoom and upscale */
+  min-height: 420px;
   overflow: hidden;
+  background: #000; /* letterbox on contain looks intentional */
 }
 .hero-video, .hero-media {
   position: absolute;
@@ -18,9 +19,9 @@ body {
   height: 100%;
 }
 .hero-media {
-  object-fit: cover; /* crisp cover */
-  object-position: center 80%; /* prioritize bottom; crop more from top */
-  filter: contrast(1.02) saturate(1.02);
+  object-fit: contain; /* avoid cropping and heavy scaling */
+  object-position: center center;
+  filter: none;
 }
 .hero-overlay {
   text-align: center;
