@@ -172,8 +172,9 @@ button:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 400px; /* Adjust as needed */
+  height: 420px;
   position: relative;
+  margin-bottom: 60px;
 }
 
 .shelf {
@@ -187,8 +188,9 @@ button:hover {
 }
 
 .items {
-  display: flex;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+  gap: 24px;
   width: 80%;
   position: absolute;
   bottom: 10px;
@@ -213,8 +215,9 @@ button:hover {
     height: 210px;
   }
   .shelf-container {
-    height: 300px; /* Smaller container on mobile */
+    height: 320px; /* Smaller container on mobile */
   }
+  .items { grid-template-columns: repeat(3, minmax(100px, 1fr)); gap: 14px; }
 }
 
 .canvas-img {
