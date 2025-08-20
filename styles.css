@@ -135,7 +135,8 @@ body {
   .nav-links.open { display:flex; }
   .nav .logo { height: 40px; }
   .nav-brand { font-size: 1.2rem; }
-  .finish-tabs button { padding: .8rem 1.1rem; min-width: 130px; font-size: 1rem; }
+  .finish-tabs { display: grid; grid-template-columns: 1fr; max-width: 680px; width: calc(100% - 2rem); padding: .5rem; top: 64px; }
+  .finish-tabs button { width: 100%; min-width: 0; padding: 1rem 1.2rem; font-size: 1.1rem; }
 }
 
 .pricing h3 {
@@ -252,22 +253,25 @@ button:hover {
   display: inline-flex;
   justify-content: center;
   gap: .5rem;
-  margin: 1rem 0 1.25rem;
+  margin: 1rem auto 1.5rem;
   background: rgba(255,255,255,0.06);
   border: 1px solid rgba(255,255,255,0.12);
   border-radius: 999px;
-  padding: .35rem;
+  padding: .5rem;
+  position: sticky;
+  top: 72px;
+  z-index: 900;
 }
 
 .finish-tabs button {
-  padding: .9rem 1.35rem;
-  min-width: 140px;
+  padding: 1.1rem 1.6rem;
+  min-width: 160px;
   border: none;
   border-radius: 999px;
   background: transparent;
   color: #eaeaea;
   font-weight: 700;
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   letter-spacing: .2px;
   cursor: pointer;
   transition: background .2s ease, color .2s ease, transform .12s ease, box-shadow .2s ease;
