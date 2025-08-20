@@ -7,8 +7,8 @@ body {
 /* Hero (smaller, sharper, faster) */
 #hero {
   position: relative;
-  height: 60vh; /* reduce perceived zoom and upscale */
-  min-height: 420px;
+  height: 80vh; /* larger hero while keeping clarity */
+  min-height: 560px;
   overflow: hidden;
   background: #000; /* letterbox on contain looks intentional */
 }
@@ -30,7 +30,7 @@ body {
 }
 
 @media (max-width: 720px) {
-  #hero { height: 50vh; min-height: 320px; }
+  #hero { height: 60vh; min-height: 380px; }
 }
 
 /* About section */
