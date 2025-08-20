@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="preload" as="video" href="hero-1p5x.mp4" type="video/mp4">
   <link rel="preload" as="image" href="gallery_images/superstitionmtn.jpg">
 </head>
 <body>
@@ -26,10 +27,10 @@
     </div>
   </nav>
 
-  <!-- Smaller, faster hero -->
+  <!-- Video hero (crisp, lightweight) -->
   <section id="hero" aria-label="Featured">
-    <div class="hero-slider">
-      <div class="slide active" style="background-image: url('gallery_images/superstitionmtn.jpg');"></div>
+    <div class="hero-video">
+      <video class="hero-media" autoplay muted loop playsinline preload="metadata" poster="gallery_images/superstitionmtn.jpg" aria-hidden="true" controlslist="nodownload nofullscreen noremoteplayback"></video>
     </div>
     <div class="hero-overlay">
       <h1>Iconic Western Landscapes</h1>
@@ -98,16 +99,16 @@
     // Build gallery dynamically from folder list
     const galleryImages = [];
 
-    // Add slider functionality
-    (function initHeroSlider() {
-      const slides = document.querySelectorAll('.hero-slider .slide');
-      if (slides.length <= 1) return; // no rotation for single image
-      let current = 0;
-      setInterval(() => {
-        slides[current].classList.remove('active');
-        current = (current + 1) % slides.length;
-        slides[current].classList.add('active');
-      }, 5000);
+    // Initialize hero video source once DOM is ready
+    (function initHeroVideo(){
+      const v = document.querySelector('video.hero-media');
+      if (!v) return;
+      const source = document.createElement('source');
+      source.src = 'hero-1p5x.mp4';
+      source.type = 'video/mp4';
+      v.appendChild(source);
+      // Nudge GPU for sharper rendering on some browsers
+      v.style.transform = 'translateZ(0)';
     })();
 
     // Update initGallery to create shelf items
