@@ -1,13 +1,7 @@
-/* Global base (dark theme for landing) */
+/* Global updates for earthy theme */
 body {
-  background: #0a0a0a; /* near-black */
-  color: #f1efe9; /* warm off-white */
-  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-}
-
-h1, h2, h3 {
-  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
-  color: #f5f3ee;
+  background: #f8f4f0; /* Soft sand */
+  color: #3d2b1f; /* Deep brown */
 }
 
 /* Hero slider */
@@ -27,41 +21,17 @@ h1, h2, h3 {
 .slide.active {
   opacity: 1;
 }
-.hero-overlay { text-align:center; z-index:1; }
-
-/* New fixed hero */
-#hero.hero-fixed {
-  position: relative;
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  background-attachment: fixed;
-  background-position: center;
-  background-size: cover;
-}
-#hero.hero-fixed::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.55) 60%, rgba(0,0,0,.8) 100%);
-}
-.hero-content {
-  position: relative;
+.hero-overlay {
   text-align: center;
-  padding: 2rem;
-  max-width: 1000px;
+  z-index: 1;
+  /* Existing styles */
 }
-.hero-title { font-size: clamp(2rem, 6vw, 4rem); line-height: 1.1; margin: 0 0 .5rem; }
-.hero-sub { font-size: clamp(1rem, 2.2vw, 1.25rem); color: #d0ccc3; margin: 0 0 1.25rem; }
-.cta { display:inline-block; padding:.9rem 1.6rem; background:#c4803f; color:#fff; text-decoration:none; font-weight:700; border-radius:999px; box-shadow:0 8px 20px rgba(0,0,0,.35); }
-.cta:hover { filter: brightness(1.05); }
 
 /* About section */
 #about {
   padding: 4rem 2rem;
   text-align: center;
-  background: transparent;
-  color: #e8e6e1;
+  background: #e0d8d1; /* Light earth */
 }
 .about-content {
   max-width: 800px;
@@ -136,8 +106,6 @@ h1, h2, h3 {
   color: #fff;
   box-shadow: 0 2px 10px rgba(0,0,0,.2);
 }
-.nav.nav--overlay { background: transparent; box-shadow: none; position: fixed; width: 100%; }
-.nav.nav--solid { background: #0d0d0d; box-shadow: 0 2px 10px rgba(0,0,0,.35); }
 .nav-inner {
   max-width: 1200px;
   margin: 0 auto;
@@ -266,10 +234,24 @@ button:hover {
 }
 
 /* Tab styles */
-.finish-tabs { display:flex; justify-content:center; gap:.75rem; margin: 1rem 0 1.25rem; }
-.finish-tabs button { padding:.55rem 1.1rem; border:1px solid #c4803f; background: transparent; color:#f1efe9; cursor:pointer; border-radius:999px; font-weight:600; }
-.finish-tabs button:hover { background:#201a14; }
-.finish-tabs button.active { background:#c4803f; color:#fff; }
+.finish-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.finish-tabs button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #d4a373;
+  background: #fff;
+  cursor: pointer;
+}
+
+.finish-tabs button.active {
+  background: #d4a373;
+  color: #fff;
+}
 
 /* Professional form upgrades (tabbed in modal) */
 .modal-content {
@@ -330,7 +312,9 @@ button:hover {
 }
 
 /* White background for photo detail pages */
-.white-bg { background:#fff !important; }
+.white-bg {
+  background: #fff !important;
+}
 
 /* Larger photo previews */
 .preview-container {
@@ -348,12 +332,6 @@ button:hover {
   border-radius: 10px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.18);
 }
-
-/* Page container and lightbox */
-.container { max-width: 1200px; margin: 0 auto; padding-left: 1rem; padding-right: 1rem; }
-.lead { font-size: 1.05rem; }
-#lightbox { position: fixed; inset:0; background: rgba(0,0,0,.9); display:grid; place-items:center; z-index: 2000; }
-#lightbox img { max-width: 92vw; max-height: 92vh; border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,.6); }
 
 /* Polished order button */
 .order-cta {

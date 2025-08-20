@@ -5,11 +5,8 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1" />
 	<title>Photo Detail</title>
 	<link rel="stylesheet" href="styles.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="white-bg">
 	<nav class="nav" aria-label="Primary">
 		<div class="nav-inner">
 			<a class="nav-brand" href="index.html">
@@ -25,9 +22,8 @@
 		</div>
 	</nav>
 
-	<main class="container" style="padding-top: 1.5rem; padding-bottom: 2rem;">
+	<main style="padding: 1.5rem 1rem;">
 		<h1 id="photo-title">Selected Photo</h1>
-		<p class="lead" style="margin:.25rem 0 1rem; color:#d0ccc3;">Select a finish to preview. Click any image to view larger, then order your print.</p>
 		<div class="finish-tabs" role="tablist" aria-label="Finish options">
 			<button data-finish="canvas" class="active" role="tab" aria-selected="true">Canvas</button>
 			<button data-finish="metal" role="tab" aria-selected="false">Metal</button>
@@ -36,8 +32,6 @@
 		<div id="preview-container" class="preview-container" aria-live="polite"></div>
 		<a id="order-btn" class="order-cta" href="#">Order This Print</a>
 	</main>
-
-	<div id="lightbox" hidden aria-modal="true" role="dialog"><img alt="Expanded preview"></div>
 
 	<script>
 	(function(){
@@ -121,34 +115,11 @@
 
 		// initial load
 		loadFinishVariants('canvas');
-
-		// Lightbox
-		const lightbox = document.getElementById('lightbox');
-		const lightboxImg = lightbox.querySelector('img');
-		previewContainer.addEventListener('click', (e) => {
-			const t = e.target;
-			if (t && t.tagName === 'IMG') {
-				lightboxImg.src = t.src;
-				lightbox.hidden = false;
-				document.body.style.overflow = 'hidden';
-			}
-		});
-		lightbox.addEventListener('click', () => {
-			lightbox.hidden = true;
-			document.body.style.overflow = '';
-		});
-		window.addEventListener('keydown', (e) => {
-			if (e.key === 'Escape' && !lightbox.hidden) {
-				lightbox.hidden = true;
-				document.body.style.overflow = '';
-			}
-		});
 	})();
 	</script>
 	<script>
 	// Mobile nav toggle
 	(function(){
-		const nav = document.querySelector('.nav');
 		const btn = document.querySelector('.nav-toggle');
 		const menu = document.getElementById('nav-menu');
 		if (btn && menu) {
@@ -157,12 +128,112 @@
 				btn.setAttribute('aria-expanded', String(open));
 			});
 		}
-		window.addEventListener('scroll', () => {
-			const solid = window.scrollY > 10;
-			nav?.classList.toggle('nav--solid', solid);
-			nav?.classList.toggle('nav--overlay', !solid);
-		}, { passive:true });
 	})();
 	</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Photo Detail - Wild West Wall Art</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="white-bg">
+
+  <!-- Nav and other shared elements -->
+
+  <section id="photo-detail">
+    <h1 id="photo-title"></h1>
+    <div class="finish-tabs">
+      <button data-finish="canvas">Canvas</button>
+      <button data-finish="metal">Metal</button>
+      <button data-finish="acrylic">Acrylic</button>
+    </div>
+    <div class="preview-container">
+      <img id="preview-img" src="" alt="Photo Preview">
+    </div>
+<a href="#order" data-open-order class="order-cta">Order This Print</a>
+  </section>
+
+  <!-- Existing order modal copied here or linked -->
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const imgFile = urlParams.get('img'); // e.g., 'sedona-moon.jpg'
+    const baseName = imgFile.replace(/\.[^.]+$/, ''); // e.g., 'sedona-moon'
+    const originalSrc = `gallery_images/${imgFile}`;
+
+    document.getElementById('photo-title').textContent = baseName.replace(/[-_]+/g,' ').replace(/\b\w/g, m => m.toUpperCase());
+
+    const previewImg = document.getElementById('preview-img');
+    previewImg.src = originalSrc; // Default to original
+    previewImg.alt = 'Photo Preview';
+
+    // Replace the loadFinishVariants function with Promise-based version
+    function loadFinishVariants(finish) {
+      const previewContainer = document.querySelector('.preview-container');
+      previewContainer.innerHTML = ''; // Clear previous
+      previewContainer.classList.add('loading');
+
+      const variantPromises = [];
+      for (let i = 0; i <= 10; i++) { // Check base and up to 10 variants
+        const suffix = i > 0 ? i : '';
+        const variantSrc = `${finish}_previews/${baseName}_${finish}${suffix}.jpg`;
+        variantPromises.push(
+          new Promise(resolve => {
+            const img = new Image();
+            img.src = variantSrc;
+            img.onload = () => resolve(variantSrc);
+            img.onerror = () => resolve(null);
+          })
+        );
+      }
+
+      Promise.all(variantPromises).then(results => {
+        const variants = results.filter(src => src !== null);
+        previewContainer.classList.remove('loading');
+
+        if (variants.length === 0) {
+          const img = document.createElement('img');
+          img.src = originalSrc;
+          img.alt = 'Fallback Preview';
+          img.classList.add('error');
+          previewContainer.appendChild(img);
+          return;
+        }
+
+        // Dynamic grid sizing
+        previewContainer.style.gridTemplateColumns = `repeat(${variants.length}, 1fr)`;
+        variants.forEach(src => {
+          const img = document.createElement('img');
+          img.src = src;
+          img.alt = `${finish} Variant`;
+          previewContainer.appendChild(img);
+        });
+
+        // If many (>3), add cycling button (optional; can expand if needed)
+        if (variants.length > 3) {
+          const nextBtn = document.createElement('button');
+          nextBtn.textContent = 'Next Variant';
+          nextBtn.onclick = () => { /* Add cycle logic here if desired */ };
+          previewContainer.appendChild(nextBtn);
+        }
+      });
+    }
+
+    document.querySelectorAll('.finish-tabs button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.finish-tabs button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const finish = btn.dataset.finish;
+        loadFinishVariants(finish);
+      });
+    });
+
+    // Set default to canvas
+    document.querySelector('[data-finish="canvas"]').click();
+  </script>
 </body>
 </html>
