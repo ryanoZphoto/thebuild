@@ -266,24 +266,10 @@ button:hover {
 }
 
 /* Tab styles */
-.finish-tabs {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.finish-tabs button {
-  padding: 0.5rem 1rem;
-  border: 1px solid #d4a373;
-  background: #fff;
-  cursor: pointer;
-}
-
-.finish-tabs button.active {
-  background: #d4a373;
-  color: #fff;
-}
+.finish-tabs { display:flex; justify-content:center; gap:.75rem; margin: 1rem 0 1.25rem; }
+.finish-tabs button { padding:.55rem 1.1rem; border:1px solid #c4803f; background: transparent; color:#f1efe9; cursor:pointer; border-radius:999px; font-weight:600; }
+.finish-tabs button:hover { background:#201a14; }
+.finish-tabs button.active { background:#c4803f; color:#fff; }
 
 /* Professional form upgrades (tabbed in modal) */
 .modal-content {
@@ -344,9 +330,7 @@ button:hover {
 }
 
 /* White background for photo detail pages */
-.white-bg {
-  background: #fff !important;
-}
+.white-bg { background:#fff !important; }
 
 /* Larger photo previews */
 .preview-container {
