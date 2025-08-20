@@ -7,8 +7,8 @@ body {
 /* Hero (smaller, sharper, faster) */
 #hero {
   position: relative;
-  height: 55vh; /* smaller visual footprint */
-  min-height: 420px;
+  height: 70vh; /* show more of the video */
+  min-height: 520px;
   overflow: hidden;
 }
 .hero-video, .hero-media {
@@ -19,6 +19,7 @@ body {
 }
 .hero-media {
   object-fit: cover; /* crisp cover */
+  object-position: center 40%; /* tweak vertical framing */
   filter: contrast(1.02) saturate(1.02);
 }
 .hero-overlay {
@@ -28,7 +29,7 @@ body {
 }
 
 @media (max-width: 720px) {
-  #hero { height: 42vh; min-height: 260px; }
+  #hero { height: 50vh; min-height: 320px; }
 }
 
 /* About section */
