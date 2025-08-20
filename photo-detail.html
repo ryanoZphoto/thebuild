@@ -13,9 +13,11 @@
 				<img src="logo.png" alt="Wild West Wall Art logo" class="logo">
 				<span>Wild West Wall Art</span>
 			</a>
+			<button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">☰</button>
 			<ul id="nav-menu" class="nav-links">
 				<li><a href="index.html#gallery">Gallery</a></li>
-				<li><a href="cart.html" id="cart-link">Cart</a></li>
+				<li><a href="cart.html">Cart</a></li>
+				<li><a href="mailto:ryan@ryanosmunphoto.com">Contact</a></li>
 			</ul>
 		</div>
 	</nav>
@@ -113,6 +115,19 @@
 
 		// initial load
 		loadFinishVariants('canvas');
+	})();
+	</script>
+	<script>
+	// Mobile nav toggle
+	(function(){
+		const btn = document.querySelector('.nav-toggle');
+		const menu = document.getElementById('nav-menu');
+		if (btn && menu) {
+			btn.addEventListener('click', () => {
+				const open = menu.classList.toggle('open');
+				btn.setAttribute('aria-expanded', String(open));
+			});
+		}
 	})();
 	</script>
 </body>
