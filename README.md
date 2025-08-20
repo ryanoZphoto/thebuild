@@ -2,6 +2,8 @@
 
 Static site for Wild West Wall Art showcasing metal, acrylic, and canvas prints with PayPal checkout.
 
+For a full developer walkthrough of the codebase (file-by-file, what to edit, build system, and image conventions), see `DEV_README.md`.
+
 ### How the checkout works
 - **Dynamic PayPal SDK loading**: `index.html` loads the PayPal JS SDK at runtime and renders buttons only after the SDK finishes loading. This prevents race conditions and fixes “paypal is not defined”.
 - **Live-only environment**: The page always loads the SDK with the configured Live client ID. No sandbox fallback is used.
