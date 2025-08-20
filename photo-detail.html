@@ -6,7 +6,7 @@
 	<title>Photo Detail</title>
 	<link rel="stylesheet" href="styles.css" />
 </head>
-<body class="white-bg">
+<body>
 	<nav class="nav" aria-label="Primary">
 		<div class="nav-inner">
 			<a class="nav-brand" href="index.html">
@@ -131,110 +131,5 @@
 		}
 	})();
 	</script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Photo Detail - Wild West Wall Art</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body class="white-bg">
-
-  <!-- Nav and other shared elements -->
-
-  <section id="photo-detail">
-    <h1 id="photo-title"></h1>
-    <div class="finish-tabs">
-      <button data-finish="canvas">Canvas</button>
-      <button data-finish="metal">Metal</button>
-      <button data-finish="acrylic">Acrylic</button>
-    </div>
-    <div class="preview-container">
-      <img id="preview-img" src="" alt="Photo Preview">
-    </div>
-<a href="#order" data-open-order class="order-cta">Order This Print</a>
-  </section>
-
-  <!-- Existing order modal copied here or linked -->
-
-  <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const imgFile = urlParams.get('img'); // e.g., 'sedona-moon.jpg'
-    const baseName = imgFile.replace(/\.[^.]+$/, ''); // e.g., 'sedona-moon'
-    const originalSrc = `gallery_images/${imgFile}`;
-
-    document.getElementById('photo-title').textContent = baseName.replace(/[-_]+/g,' ').replace(/\b\w/g, m => m.toUpperCase());
-
-    const previewImg = document.getElementById('preview-img');
-    previewImg.src = originalSrc; // Default to original
-    previewImg.alt = 'Photo Preview';
-
-    // Replace the loadFinishVariants function with Promise-based version
-    function loadFinishVariants(finish) {
-      const previewContainer = document.querySelector('.preview-container');
-      previewContainer.innerHTML = ''; // Clear previous
-      previewContainer.classList.add('loading');
-
-      const variantPromises = [];
-      for (let i = 0; i <= 10; i++) { // Check base and up to 10 variants
-        const suffix = i > 0 ? i : '';
-        const variantSrc = `${finish}_previews/${baseName}_${finish}${suffix}.jpg`;
-        variantPromises.push(
-          new Promise(resolve => {
-            const img = new Image();
-            img.src = variantSrc;
-            img.onload = () => resolve(variantSrc);
-            img.onerror = () => resolve(null);
-          })
-        );
-      }
-
-      Promise.all(variantPromises).then(results => {
-        const variants = results.filter(src => src !== null);
-        previewContainer.classList.remove('loading');
-
-        if (variants.length === 0) {
-          const img = document.createElement('img');
-          img.src = originalSrc;
-          img.alt = 'Fallback Preview';
-          img.classList.add('error');
-          previewContainer.appendChild(img);
-          return;
-        }
-
-        // Dynamic grid sizing
-        previewContainer.style.gridTemplateColumns = `repeat(${variants.length}, 1fr)`;
-        variants.forEach(src => {
-          const img = document.createElement('img');
-          img.src = src;
-          img.alt = `${finish} Variant`;
-          previewContainer.appendChild(img);
-        });
-
-        // If many (>3), add cycling button (optional; can expand if needed)
-        if (variants.length > 3) {
-          const nextBtn = document.createElement('button');
-          nextBtn.textContent = 'Next Variant';
-          nextBtn.onclick = () => { /* Add cycle logic here if desired */ };
-          previewContainer.appendChild(nextBtn);
-        }
-      });
-    }
-
-    document.querySelectorAll('.finish-tabs button').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.finish-tabs button').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const finish = btn.dataset.finish;
-        loadFinishVariants(finish);
-      });
-    });
-
-    // Set default to canvas
-    document.querySelector('[data-finish="canvas"]').click();
-  </script>
 </body>
 </html>

@@ -241,23 +241,32 @@ button:hover {
 
 /* Tab styles */
 .finish-tabs {
-  display: flex;
+  display: inline-flex;
   justify-content: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: .5rem;
+  margin: 1rem 0 1.25rem;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 999px;
+  padding: .35rem;
 }
 
 .finish-tabs button {
-  padding: 0.5rem 1rem;
-  border: 1px solid #d4a373;
-  background: #fff;
+  padding: .7rem 1.2rem;
+  min-width: 120px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: #eaeaea;
+  font-weight: 700;
+  letter-spacing: .2px;
   cursor: pointer;
+  transition: background .2s ease, color .2s ease, transform .12s ease, box-shadow .2s ease;
 }
 
-.finish-tabs button.active {
-  background: #d4a373;
-  color: #fff;
-}
+.finish-tabs button:hover { background: rgba(255,255,255,0.1); }
+.finish-tabs button:active { transform: scale(.98); }
+.finish-tabs button.active { background: #d4a373; color: #0d0d0d; box-shadow: 0 6px 16px rgba(212,163,115,.35); }
 
 /* Professional form upgrades (tabbed in modal) */
 .modal-content {
@@ -319,7 +328,7 @@ button:hover {
 
 /* White background for photo detail pages */
 .white-bg {
-  background: #fff !important;
+  background: #000 !important;
 }
 
 /* Larger photo previews */
