@@ -141,6 +141,26 @@
 		const shippingCost = 10;
 		const totalDisplay = document.getElementById('total');
 
+		// Rebuild size options to include per-finish price labels
+		const sizeSelect = form.elements.size;
+		const sizeOrder = ["20x40","24x36","20x30","16x24"];
+		function refreshSizeOptions(){
+			const finish = form.elements.finish.value;
+			const previous = sizeSelect.value;
+			sizeSelect.innerHTML = '';
+			sizeOrder.forEach(size => {
+				if (prices[finish] && prices[finish][size] != null) {
+					const opt = document.createElement('option');
+					opt.value = size;
+					opt.textContent = `${size}\" — $${prices[finish][size].toFixed(2)}`;
+					sizeSelect.appendChild(opt);
+				}
+			});
+			if (prices[finish] && prices[finish][previous] != null) {
+				sizeSelect.value = previous;
+			}
+		}
+
 		function updateTotal() {
 			const finish = form.elements.finish.value;
 			const size = form.elements.size.value;
@@ -152,6 +172,7 @@
 		}
 		['finish','size','quantity'].forEach(n => form.elements[n].addEventListener('change', updateTotal));
 		form.elements.quantity.addEventListener('input', updateTotal);
+		refreshSizeOptions();
 		updateTotal();
 
 		function val(name) { return form.elements[name]?.value?.trim() || ''; }
@@ -187,7 +208,9 @@
 		refreshPreview();
 		form.elements.finish.addEventListener('change', () => {
 			document.getElementById('item-title').textContent = `${titleParam} — ${form.elements.finish.value}`;
+			refreshSizeOptions();
 			refreshPreview();
+			updateTotal();
 		});
 
 		// Load PayPal SDK and render buttons
