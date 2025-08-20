@@ -273,9 +273,10 @@ button:hover {
 
 /* Preview loading/error styles */
 /* Updated preview container for grid */
+/* base preview container (overridden later with larger sizing) */
 .preview-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Dynamic based on count */
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
   max-width: 800px;
   margin: 0 auto;

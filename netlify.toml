@@ -1,5 +1,5 @@
 [build]
-  command = "node scripts/generate-gallery.js && echo 'Build complete'"  # Add your existing build command if any, e.g., "&& npm run build"
+  command = "node scripts/generate-gallery.js && echo 'Build complete'"
 
 [dev]
   command = "node scripts/generate-gallery.js"  # For local dev

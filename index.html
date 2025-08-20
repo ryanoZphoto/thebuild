@@ -18,7 +18,7 @@
       </a>
       <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">☰</button>
       <ul id="nav-menu" class="nav-links">
-        <li><a href="#order" data-open-order>Order</a></li>
+        <li><a href="cart.html">Order</a></li>
         <li><a href="mailto:ryan@ryanosmunphoto.com">Contact</a></li>
       </ul>
     </div>
@@ -44,7 +44,7 @@
     <div class="about-content">
       <h2>About Wild West Wall Art</h2>
       <p>Discover stunning photography from the American Southwest, printed on high-quality metal, acrylic, or canvas. Each piece brings the rugged beauty of the Wild West into your home.</p>
-      <a href="#order" data-open-order class="cta">Start Your Order</a>
+      <a href="#gallery" class="cta">Start Your Order</a>
     </div>
   </section>
 
@@ -77,103 +77,12 @@
     </div>
   </section>
 
-  <section id="order" class="modal" aria-hidden="true">
-    <div class="modal-content">
-      <button type="button" class="modal-close" aria-label="Close">×</button>
-      <h2>Place an Order</h2>
-      <form name="order" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thankyou.html">
-      <input type="hidden" name="form-name" value="order">
-      <p style="display:none">
-        <label>Don’t fill this out: <input name="bot-field"></label>
-      </p>
-      <p>
-        <label>Name:<br>
-          <input type="text" name="name" required>
-        </label>
-      </p>
-      <p>
-        <label>Email:<br>
-          <input type="email" name="email" required>
-        </label>
-      </p>
-      <p>
-        <label>Finish:<br>
-          <select name="finish" required>
-            <option value="Metallic">Metallic</option>
-            <option value="Acrylic">Acrylic</option>
-            <option value="Canvas">Canvas</option>
-          </select>
-        </label>
-      </p>
-      <p>
-        <label>Size:<br>
-          <select name="size" required>
-            <option value="20x40">20x40"</option>
-            <option value="24x36">24x36"</option>
-            <option value="20x30">20x30"</option>
-            <option value="16x24">16x24"</option>
-          </select>
-        </label>
-      </p>
-      <p>
-        <label>Quantity:<br>
-          <input type="number" name="quantity" value="1" min="1" step="1">
-        </label>
-      </p>
-      <p>
-        <label>Message:<br>
-          <textarea name="message"></textarea>
-        </label>
-      </p>
-
-      <fieldset>
-        <legend>Shipping Address</legend>
-        <p>
-          <label>Address Line 1:<br>
-            <input type="text" name="address_line_1" required>
-          </label>
-        </p>
-        <p>
-          <label>Address Line 2 (optional):<br>
-            <input type="text" name="address_line_2">
-          </label>
-        </p>
-        <p>
-          <label>City:<br>
-            <input type="text" name="city" required>
-          </label>
-        </p>
-        <p>
-          <label>State (2-letter):<br>
-            <input type="text" name="state" maxlength="2" pattern="[A-Za-z]{2}" required>
-          </label>
-        </p>
-        <p>
-          <label>Postal Code:<br>
-            <input type="text" name="postal_code" pattern="\d{5}(-\d{4})?" required>
-          </label>
-        </p>
-        <p>
-          <label>Country:<br>
-            <input type="text" name="country_code" value="US" maxlength="2" pattern="[A-Za-z]{2}" required>
-          </label>
-        </p>
-      </fieldset>
-
-      <p id="total"></p>
-      <input type="hidden" name="photo_title">
-      <input type="hidden" name="paypal_order_id">
-      <input type="hidden" name="paypal_payer_email">
-      <div id="paypal-button-container"></div>
-      </form>
-    </div>
-  </section>
+  
 
   <footer>
     <p>&copy; 2024 Wild West Wall Art</p>
   </footer>
 
-  <!-- PayPal SDK loader (dynamic) -->
   <script>
     // Mobile nav toggle
     (function(){
@@ -187,126 +96,8 @@
       }
     })();
 
-    (function loadPayPalSdk(){
-      const LIVE_CLIENT_ID = 'AcosS2AbZFUgYmDEx1dh9piJdWL3jM2u0RCRdjf5rJ0YerCZluqwthmTzCzWmov46D39CmL6N8Gysh6a';
-      const clientId = LIVE_CLIENT_ID; // always use live client id
-      const url = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(clientId)}&currency=USD&intent=capture&components=buttons&enable-funding=card&commit=true`;
-      console.log('Loading PayPal SDK:', url);
-      const s = document.createElement('script');
-      s.src = url;
-      s.async = true;
-      s.onload = function(){
-        try { renderPayPalButtons(); } catch (e) { console.error('Render PayPal failed', e); }
-      };
-      s.onerror = function(){
-        console.error('Failed to load PayPal SDK', url);
-        alert('Unable to load PayPal. Please refresh or try again later.');
-      };
-      document.head.appendChild(s);
-    })();
-
-    // Open/close modal for order
-    (function(){
-      const modal = document.getElementById('order');
-      const opens = document.querySelectorAll('[data-open-order]');
-      const closeBtn = document.querySelector('.modal-close');
-      const open = (e) => { if (e) e.preventDefault(); modal.setAttribute('aria-hidden','false'); };
-      const close = () => modal.setAttribute('aria-hidden','true');
-      opens.forEach(a => a.addEventListener('click', open));
-      if (closeBtn) closeBtn.addEventListener('click', close);
-      modal?.addEventListener('click', (e) => { if (e.target === modal) close(); });
-    })();
-
-    const prices = {
-      Metallic: { "20x40": 220, "24x36": 150, "20x30": 120, "16x24": 70 },
-      Acrylic: { "20x40": 180, "24x36": 130, "20x30": 100, "16x24": 60 },
-      Canvas: { "20x40": 180, "24x36": 130, "20x30": 100, "16x24": 60 }
-    };
-    const shippingCost = 10;
-
-    const finishSelect = document.querySelector('select[name="finish"]');
-    const sizeSelect = document.querySelector('select[name="size"]');
-    const quantityInput = document.querySelector('input[name="quantity"]');
-    const totalDisplay = document.getElementById('total');
-
-    function updateTotal() {
-      const finish = finishSelect.value;
-      const size = sizeSelect.value;
-      const quantity = Math.max(parseInt(quantityInput.value, 10) || 1, 1);
-      const itemPrice = prices[finish][size];
-      const total = itemPrice * quantity + shippingCost;
-      totalDisplay.textContent = `Total: $${total.toFixed(2)} (including $${shippingCost} shipping)`;
-      return { finish, size, itemPrice, quantity, total };
-    }
-
-    finishSelect.addEventListener('change', updateTotal);
-    sizeSelect.addEventListener('change', updateTotal);
-    quantityInput.addEventListener('input', updateTotal);
-    updateTotal();
-
-    function val(name) {
-      return document.querySelector(`[name="${name}"]`)?.value.trim() || '';
-    }
-
-    function validateShipping() {
-      const required = ['address_line_1','city','state','postal_code','country_code'];
-      return required.every(f => val(f));
-    }
-
     // Build gallery dynamically from folder list
-    const galleryGrid = document.getElementById('gallery-grid');
     const galleryImages = [];
-    const photoTitleInput = document.querySelector('input[name="photo_title"]');
-
-    // Lightbox elements
-    const lightbox = document.createElement('div');
-    lightbox.className = 'lightbox';
-    lightbox.innerHTML = `
-      <button class="lightbox-close" aria-label="Close">×</button>
-      <button class="lightbox-prev" aria-label="Previous">‹</button>
-      <button class="lightbox-next" aria-label="Next">›</button>
-      <img class="lightbox-img" src="" alt="">
-    `;
-    document.body.appendChild(lightbox);
-
-    let currentIndex = -1;
-
-    function openLightbox(index) {
-      currentIndex = index;
-      const img = galleryImages[index];
-      lightbox.querySelector('.lightbox-img').src = img.src;
-      lightbox.querySelector('.lightbox-img').alt = img.alt;
-      lightbox.style.display = 'flex';
-      selectPhoto(img); // Integrate with existing selection
-    }
-
-    function closeLightbox() {
-      lightbox.style.display = 'none';
-    }
-
-    function showPrev() {
-      currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
-      openLightbox(currentIndex);
-    }
-
-    function showNext() {
-      currentIndex = (currentIndex + 1) % galleryImages.length;
-      openLightbox(currentIndex);
-    }
-
-    lightbox.addEventListener('click', (e) => {
-      if (e.target === lightbox || e.target.classList.contains('lightbox-close')) closeLightbox();
-    });
-    lightbox.querySelector('.lightbox-prev').addEventListener('click', showPrev);
-    lightbox.querySelector('.lightbox-next').addEventListener('click', showNext);
-
-    // Keyboard nav
-    document.addEventListener('keydown', (e) => {
-      if (lightbox.style.display === 'none') return;
-      if (e.key === 'Escape') closeLightbox();
-      if (e.key === 'ArrowLeft') showPrev();
-      if (e.key === 'ArrowRight') showNext();
-    });
 
     // Add slider functionality
     (function initHeroSlider() {
@@ -319,143 +110,46 @@
       }, 5000); // Rotate every 5s
     })();
 
-    // Update initGallery to create shelf items (replace existing initGallery)
+    // Update initGallery to create shelf items
     (function initGallery(){
       fetch('gallery-list.json')
         .then(response => response.json())
         .then(data => {
           const files = data.images || [];
+          const itemsContainer = document.querySelector('.items');
+          if (!itemsContainer) return;
           if (files.length === 0) {
-            galleryGrid.innerHTML = '<p>No images available—add some to gallery_images/ and redeploy!</p>';
+            const msg = document.createElement('p');
+            msg.textContent = 'No images available—add some to gallery_images/ and redeploy!';
+            itemsContainer.appendChild(msg);
             return;
           }
-          const itemsContainer = document.querySelector('.items');
           files.forEach((file, index) => {
             const src = `gallery_images/${file}`;
             const title = file.replace(/\.[^.]+$/, '').replace(/[-_]+/g,' ').replace(/\b\w/g, m => m.toUpperCase());
             const item = document.createElement('div');
             item.className = 'shelf-item';
             item.style.transform = `rotateY(${index % 2 === 0 ? -5 : 5}deg) translateZ(20px)`;
-            item.innerHTML = `<img src="${src}" alt="${title}" class="canvas-img">`;
+            item.innerHTML = `<img src="${src}" alt="${title}" class="canvas-img" loading="lazy" decoding="async">`;
             item.addEventListener('click', () => {
-              window.location.href = `photo-detail.html?img=${file}`;
-            }); // Replace openLightbox if desired, or keep both
+              window.location.href = `photo-detail.html?img=${encodeURIComponent(file)}`;
+            });
             item.addEventListener('mouseover', () => item.style.transform += ' scale(1.05) translateY(-10px)');
             item.addEventListener('mouseout', () => item.style.transform = `rotateY(${index % 2 === 0 ? -5 : 5}deg) translateZ(20px)`);
             itemsContainer.appendChild(item);
             galleryImages.push(item.querySelector('img'));
           });
-          if (galleryImages.length) selectPhoto(galleryImages[0]);
         })
         .catch(err => {
           console.error('Error loading gallery list:', err);
-          galleryGrid.innerHTML = '<p>Error loading gallery—please check console.</p>';
+          const itemsContainer = document.querySelector('.items');
+          if (itemsContainer) {
+            const msg = document.createElement('p');
+            msg.textContent = 'Error loading gallery—please check console.';
+            itemsContainer.appendChild(msg);
+          }
         });
     })();
-
-    // New function for order button
-    function selectPhotoAndOpenOrder(title) {
-      photoTitleInput.value = title;
-      document.querySelector('[data-open-order]').click(); // Open modal
-    }
-
-    // Stepper: finish and size pretty buttons synced with selects
-    function syncOptionGroup(containerId, selectEl) {
-      const container = document.getElementById(containerId);
-      if (!container || !selectEl) return;
-      container.addEventListener('click', (e) => {
-        const btn = e.target.closest('.option');
-        if (!btn) return;
-        container.querySelectorAll('.option').forEach(b => b.classList.remove('selected'));
-        btn.classList.add('selected');
-        const value = btn.getAttribute('data-value');
-        selectEl.value = value;
-        updateTotal();
-      });
-    }
-    syncOptionGroup('finish-options', finishSelect);
-    syncOptionGroup('size-options', sizeSelect);
-
-    function renderPayPalButtons() {
-      if (!window.paypal || !window.paypal.Buttons) {
-        throw new Error('PayPal SDK not available');
-      }
-
-      window.paypal.Buttons({
-      createOrder: function(data, actions) {
-        if (!validateShipping()) {
-          alert('Please fill in all required shipping address fields.');
-          throw new Error('Missing shipping fields');
-        }
-
-        const { finish, size, itemPrice, quantity, total } = updateTotal();
-        const title = (photoTitleInput && photoTitleInput.value) || 'Photo';
-
-        const address = {
-          address_line_1: val('address_line_1'),
-          admin_area_2: val('city'),
-            admin_area_1: val('state').toUpperCase(),
-          postal_code: val('postal_code'),
-          country_code: val('country_code').toUpperCase()
-        };
-        const line2 = val('address_line_2');
-        if (line2) address.address_line_2 = line2;
-
-        return actions.order.create({
-          intent: 'CAPTURE',
-          purchase_units: [{
-            amount: {
-              value: total.toFixed(2),
-              currency_code: 'USD',
-              breakdown: {
-                item_total: { currency_code: 'USD', value: (itemPrice * quantity).toFixed(2) },
-                shipping: { currency_code: 'USD', value: shippingCost.toFixed(2) }
-              }
-            },
-            items: [{
-              name: `Photo: ${title} — ${finish} ${size}\" Print`,
-              unit_amount: { currency_code: 'USD', value: itemPrice.toFixed(2) },
-              quantity: quantity.toString()
-            }],
-            shipping: {
-              name: { full_name: val('name') || 'Customer' },
-              address
-            }
-          }],
-          application_context: {
-            shipping_preference: 'SET_PROVIDED_ADDRESS',
-            user_action: 'PAY_NOW'
-          }
-        });
-      },
-      onApprove: function(data, actions) {
-        return actions.order.capture().then(function(details) {
-          const form = document.querySelector('form[name="order"]');
-          const orderIdInput = form.querySelector('input[name="paypal_order_id"]');
-          const payerEmailInput = form.querySelector('input[name="paypal_payer_email"]');
-
-          if (orderIdInput) {
-            orderIdInput.value = (details && (details.id || (details.purchase_units && details.purchase_units[0] && details.purchase_units[0].payments && details.purchase_units[0].payments.captures && details.purchase_units[0].payments.captures[0] && details.purchase_units[0].payments.captures[0].id))) || '';
-          }
-          if (payerEmailInput) {
-            payerEmailInput.value = (details && details.payer && details.payer.email_address) || '';
-          }
-
-          form.submit();
-        });
-      },
-      onError: function(err) {
-        console.error('PayPal Buttons error', err);
-        alert('There was a problem processing the payment. Please try again.');
-      },
-      onInit: function(data, actions) {
-        // Suppress all console warnings/errors from PayPal
-        const originalConsole = console;
-        console = { log: () => {}, warn: () => {}, error: () => {} };
-        // Restore after init if needed
-      }
-    }).render('#paypal-button-container');
-    }
   </script>
 </body>
 </html>

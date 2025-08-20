@@ -1,6 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	<title>Photo Detail</title>
+	<link rel="stylesheet" href="styles.css" />
+</head>
+<body class="white-bg">
+	<nav class="nav" aria-label="Primary">
+		<div class="nav-inner">
+			<a class="nav-brand" href="index.html">
+				<img src="logo.png" alt="Wild West Wall Art logo" class="logo">
+				<span>Wild West Wall Art</span>
+			</a>
+			<ul id="nav-menu" class="nav-links">
+				<li><a href="index.html#gallery">Gallery</a></li>
+				<li><a href="cart.html" id="cart-link">Cart</a></li>
+			</ul>
+		</div>
+	</nav>
+
+	<main style="padding: 1.5rem 1rem;">
+		<h1 id="photo-title">Selected Photo</h1>
+		<div class="finish-tabs" role="tablist" aria-label="Finish options">
+			<button data-finish="canvas" class="active" role="tab" aria-selected="true">Canvas</button>
+			<button data-finish="metal" role="tab" aria-selected="false">Metal</button>
+			<button data-finish="acrylic" role="tab" aria-selected="false">Acrylic</button>
+		</div>
+		<div id="preview-container" class="preview-container" aria-live="polite"></div>
+		<a id="order-btn" class="order-cta" href="#">Order This Print</a>
+	</main>
+
+	<script>
+	(function(){
+		const params = new URLSearchParams(window.location.search);
+		const img = params.get('img');
+		const baseName = img ? img.replace(/\.[^.]+$/, '') : '';
+		const titleText = baseName.replace(/[-_]+/g,' ').replace(/\b\w/g, m => m.toUpperCase());
+		document.getElementById('photo-title').textContent = titleText || 'Photo';
+
+		const previewContainer = document.getElementById('preview-container');
+		const orderBtn = document.getElementById('order-btn');
+		let currentFinish = 'canvas';
+
+		function imgExists(src){
+			return new Promise(resolve => {
+				const i = new Image();
+				i.onload = () => resolve(src);
+				i.onerror = () => resolve(null);
+				i.src = src;
+			});
+		}
+
+		async function loadFinishVariants(finish){
+			currentFinish = finish;
+			previewContainer.innerHTML = '';
+			if (!baseName) return;
+
+			const folder = `${finish}_previews`;
+			const candidates = [];
+			candidates.push(`${folder}/${baseName}_${finish}.jpg`);
+			for (let n=1; n<=10; n++) {
+				candidates.push(`${folder}/${baseName}_${finish}${n}.jpg`);
+			}
+			candidates.push(`${folder}/${baseName}_${finish}_variant.jpg`);
+
+			const checks = await Promise.all(candidates.map(imgExists));
+			const valid = checks.filter(Boolean);
+
+			if (valid.length === 0) {
+				const fallback = `gallery_images/${img}`;
+				const el = document.createElement('img');
+				el.src = fallback;
+				el.alt = `${titleText} (${finish})`;
+				el.loading = 'lazy';
+				el.decoding = 'async';
+				previewContainer.style.gridTemplateColumns = 'repeat(auto-fit, minmax(300px, 1fr))';
+				previewContainer.appendChild(el);
+				return;
+			}
+
+			const colMin = valid.length >= 3 ? 300 : (valid.length === 2 ? 350 : 480);
+			previewContainer.style.gridTemplateColumns = `repeat(auto-fit, minmax(${colMin}px, 1fr))`;
+			valid.forEach(src => {
+				const el = document.createElement('img');
+				el.src = src;
+				el.alt = `${titleText} (${finish})`;
+				el.loading = 'lazy';
+				el.decoding = 'async';
+				previewContainer.appendChild(el);
+			});
+		}
+
+		// Tab wiring
+		document.querySelectorAll('.finish-tabs button').forEach(btn => {
+			btn.addEventListener('click', () => {
+				document.querySelectorAll('.finish-tabs button').forEach(b => b.classList.remove('active'));
+				btn.classList.add('active');
+				loadFinishVariants(btn.getAttribute('data-finish'));
+			});
+		});
+
+		// Order button routes to cart with params
+		orderBtn.addEventListener('click', (e) => {
+			e.preventDefault();
+			const url = new URL('cart.html', window.location.origin);
+			url.searchParams.set('img', img || '');
+			url.searchParams.set('finish', currentFinish);
+			url.searchParams.set('title', titleText);
+			window.location.href = url.pathname + url.search;
+		});
+
+		// initial load
+		loadFinishVariants('canvas');
+	})();
+	</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Photo Detail - Wild West Wall Art</title>
