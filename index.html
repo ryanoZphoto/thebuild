@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="gallery_images/superstitionmtn.jpg">
 </head>
 <body>
   <nav class="nav" aria-label="Primary">
@@ -25,13 +26,10 @@
     </div>
   </nav>
 
-  <!-- Replace hero with minimalist image slider -->
+  <!-- Smaller, faster hero -->
   <section id="hero" aria-label="Featured">
     <div class="hero-slider">
-      <div class="slide" style="background-image: url('gallery_images/antelopecanyon.jpg');"></div>
-      <div class="slide" style="background-image: url('gallery_images/sedona-moon.jpg');"></div>
-      <div class="slide" style="background-image: url('gallery_images/rainbowstorm.jpg');"></div>
-      <!-- Add more from your gallery_images as needed -->
+      <div class="slide active" style="background-image: url('gallery_images/superstitionmtn.jpg');"></div>
     </div>
     <div class="hero-overlay">
       <h1>Iconic Western Landscapes</h1>
@@ -103,12 +101,13 @@
     // Add slider functionality
     (function initHeroSlider() {
       const slides = document.querySelectorAll('.hero-slider .slide');
+      if (slides.length <= 1) return; // no rotation for single image
       let current = 0;
       setInterval(() => {
         slides[current].classList.remove('active');
         current = (current + 1) % slides.length;
         slides[current].classList.add('active');
-      }, 5000); // Rotate every 5s
+      }, 5000);
     })();
 
     // Update initGallery to create shelf items

@@ -4,7 +4,12 @@ body {
   color: #3d2b1f; /* Deep brown */
 }
 
-/* Hero slider */
+/* Hero (smaller, sharper, faster) */
+#hero {
+  position: relative;
+  height: 55vh; /* smaller visual footprint for faster perceived load */
+  min-height: 420px;
+}
 .hero-slider {
   position: absolute;
   inset: 0;
@@ -25,6 +30,10 @@ body {
   text-align: center;
   z-index: 1;
   /* Existing styles */
+}
+
+@media (max-width: 720px) {
+  #hero { height: 42vh; min-height: 260px; }
 }
 
 /* About section */
