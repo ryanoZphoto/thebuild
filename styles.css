@@ -19,7 +19,7 @@ body {
 }
 .hero-media {
   object-fit: cover; /* crisp cover */
-  object-position: center 40%; /* tweak vertical framing */
+  object-position: center 80%; /* prioritize bottom; crop more from top */
   filter: contrast(1.02) saturate(1.02);
 }
 .hero-overlay {
