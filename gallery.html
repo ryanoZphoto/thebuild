@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Gallery - Wild West Wall Art</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav class="nav" aria-label="Primary">
+    <div class="nav-inner">
+      <a class="nav-brand" href="index.html">
+        <img src="logo.png" alt="Wild West Wall Art logo" class="logo">
+        <span>Wild West Wall Art</span>
+      </a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">☰</button>
+      <ul id="nav-menu" class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="gallery.html" aria-current="page">Gallery</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main style="padding: 1.5rem 1rem;">
+    <section id="gallery">
+      <h2>Gallery</h2>
+      <div class="shelf-container">
+        <div class="shelf"></div>
+        <div class="items"></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+  // Mobile nav toggle
+  (function(){
+    const btn = document.querySelector('.nav-toggle');
+    const menu = document.getElementById('nav-menu');
+    if (btn && menu) {
+      btn.addEventListener('click', () => {
+        const open = menu.classList.toggle('open');
+        btn.setAttribute('aria-expanded', String(open));
+      });
+    }
+  })();
+
+  // Build gallery dynamically from generated list
+  (function initGallery(){
+    fetch('gallery-list.json')
+      .then(response => response.json())
+      .then(data => {
+        const files = data.images || [];
+        const itemsContainer = document.querySelector('.items');
+        if (!itemsContainer) return;
+        if (files.length === 0) {
+          const msg = document.createElement('p');
+          msg.textContent = 'No images available—add some to gallery_images/ and redeploy!';
+          itemsContainer.appendChild(msg);
+          return;
+        }
+        files.forEach((file, index) => {
+          const src = `gallery_images/${file}`;
+          const title = file.replace(/\.[^.]+$/, '').replace(/[-_]+/g,' ').replace(/\b\w/g, m => m.toUpperCase());
+          const item = document.createElement('div');
+          item.className = 'shelf-item';
+          item.style.transform = `rotateY(${index % 2 === 0 ? -5 : 5}deg) translateZ(20px)`;
+          item.innerHTML = `<img src="${src}" alt="${title}" class="canvas-img" loading="lazy" decoding="async">`;
+          item.addEventListener('click', () => {
+            window.location.href = `photo-detail.html?img=${encodeURIComponent(file)}`;
+          });
+          item.addEventListener('mouseover', () => item.style.transform += ' scale(1.05) translateY(-10px)');
+          item.addEventListener('mouseout', () => item.style.transform = `rotateY(${index % 2 === 0 ? -5 : 5}deg) translateZ(20px)`);
+          itemsContainer.appendChild(item);
+        });
+      })
+      .catch(err => {
+        console.error('Error loading gallery list:', err);
+        const itemsContainer = document.querySelector('.items');
+        if (itemsContainer) {
+          const msg = document.createElement('p');
+          msg.textContent = 'Error loading gallery—please check console.';
+          itemsContainer.appendChild(msg);
+        }
+      });
+  })();
+  </script>
+</body>
+</html>
+
+
