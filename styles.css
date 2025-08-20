@@ -1,7 +1,7 @@
-/* Global updates for earthy theme */
+/* Global updates for dark theme */
 body {
-  background: #f8f4f0; /* Soft sand */
-  color: #3d2b1f; /* Deep brown */
+  background: #000; /* Pure black */
+  color: #eaeaea; /* Light text for contrast */
 }
 
 /* Hero (smaller, sharper, faster) */
@@ -37,7 +37,7 @@ body {
 #about {
   padding: 4rem 2rem;
   text-align: center;
-  background: #e0d8d1; /* Light earth */
+  background: #000; /* Match dark background */
 }
 .about-content {
   max-width: 800px;
