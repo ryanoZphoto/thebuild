@@ -25,8 +25,9 @@
 		</div>
 	</nav>
 
-	<main style="padding: 1.5rem 1rem;">
+	<main class="container" style="padding-top: 1.5rem; padding-bottom: 2rem;">
 		<h1 id="photo-title">Selected Photo</h1>
+		<p class="lead" style="margin:.25rem 0 1rem; color:#d0ccc3;">Select a finish to preview. Click any image to view larger, then order your print.</p>
 		<div class="finish-tabs" role="tablist" aria-label="Finish options">
 			<button data-finish="canvas" class="active" role="tab" aria-selected="true">Canvas</button>
 			<button data-finish="metal" role="tab" aria-selected="false">Metal</button>
@@ -35,6 +36,8 @@
 		<div id="preview-container" class="preview-container" aria-live="polite"></div>
 		<a id="order-btn" class="order-cta" href="#">Order This Print</a>
 	</main>
+
+	<div id="lightbox" hidden aria-modal="true" role="dialog"><img alt="Expanded preview"></div>
 
 	<script>
 	(function(){
@@ -118,6 +121,28 @@
 
 		// initial load
 		loadFinishVariants('canvas');
+
+		// Lightbox
+		const lightbox = document.getElementById('lightbox');
+		const lightboxImg = lightbox.querySelector('img');
+		previewContainer.addEventListener('click', (e) => {
+			const t = e.target;
+			if (t && t.tagName === 'IMG') {
+				lightboxImg.src = t.src;
+				lightbox.hidden = false;
+				document.body.style.overflow = 'hidden';
+			}
+		});
+		lightbox.addEventListener('click', () => {
+			lightbox.hidden = true;
+			document.body.style.overflow = '';
+		});
+		window.addEventListener('keydown', (e) => {
+			if (e.key === 'Escape' && !lightbox.hidden) {
+				lightbox.hidden = true;
+				document.body.style.overflow = '';
+			}
+		});
 	})();
 	</script>
 	<script>
