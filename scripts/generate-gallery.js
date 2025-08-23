@@ -3,6 +3,7 @@ const path = require('path');
 
 const galleryDir = path.join(__dirname, '..', 'gallery_images');
 const outputFile = path.join(__dirname, '..', 'gallery-list.json');
+const sitemapFile = path.join(__dirname, '..', 'sitemap.xml');
 
 function writeList(images) {
 	try {
@@ -34,6 +35,30 @@ try {
 			.sort();
 
 		writeList(images);
+
+		// Generate sitemap.xml with index and each photo-detail URL
+		try {
+			const base = 'https://ryanosmunphoto.com/';
+			const urls = [
+				`${base}`,
+				`${base}index.html`,
+				`${base}cart.html`,
+				`${base}legal/shipping.html`,
+				`${base}legal/returns.html`,
+				`${base}thankyou.html`
+			];
+			images.forEach(img => {
+				urls.push(`${base}photo-detail.html?img=${encodeURIComponent(img)}`);
+			});
+			const xml = `<?xml version="1.0" encoding="UTF-8"?>\n` +
+				`<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+				urls.map(u => `  <url><loc>${u}</loc></url>`).join('\n') +
+				`\n</urlset>\n`;
+			fs.writeFileSync(sitemapFile, xml, 'utf8');
+			console.log(`Generated sitemap.xml with ${urls.length} URLs.`);
+		} catch (e) {
+			console.warn('Failed to generate sitemap.xml:', e.message);
+		}
 	});
 } catch (e) {
 	console.warn('Unexpected error while generating gallery-list.json. Proceeding with empty list.', e.message);

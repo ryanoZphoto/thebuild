@@ -3,8 +3,30 @@
 <scr>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width,initial-scale=1" />
-	<title>Photo Detail</title>
+	<title>Photo Detail | Western Wall Art – Wild West Wall Art</title>
+	<meta name="description" content="View finishes and sizes for premium Western wall art prints. Choose canvas, metal, or acrylic and order online." />
 	<link rel="stylesheet" href="styles.css" />
+	<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@type": "Organization",
+		"name": "Wild West Wall Art",
+		"url": "https://ryanosmunphoto.com/",
+		"logo": "https://ryanosmunphoto.com/logo.png",
+		"contactPoint": [{
+			"@type": "ContactPoint",
+			"contactType": "customer support",
+			"telephone": "+1-480-235-0732",
+			"email": "ryan@ryanosmunphoto.com"
+		}],
+		"address": {
+			"@type": "PostalAddress",
+			"addressLocality": "Mesa",
+			"addressRegion": "AZ",
+			"addressCountry": "US"
+		}
+	}
+	</script>
 	<!-- Google tag (gtag.js) -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-67REFDBJP3"></script>
 	<script>
@@ -50,6 +72,10 @@
 		<div id="preview-container" class="preview-container" aria-live="polite"></div>
 		<a id="order-btn" class="order-cta" href="#">Order This Print</a>
 	</main>
+
+	<footer>
+		<p>&copy; 2024 Wild West Wall Art · <a href="legal/shipping.html">Shipping</a> · <a href="legal/returns.html">Returns</a></p>
+	</footer>
 
 	<script>
 	(function(){
@@ -137,6 +163,57 @@
 
 		// initial load
 		loadFinishVariants('canvas');
+
+		// Inject Breadcrumb and Product JSON-LD with real values from current page
+		(function addStructuredData(){
+			if (!img) return;
+			const baseUrl = 'https://ryanosmunphoto.com/';
+			const pageUrl = baseUrl + 'photo-detail.html?img=' + encodeURIComponent(img);
+			// Breadcrumbs
+			const breadcrumb = {
+				"@context": "https://schema.org",
+				"@type": "BreadcrumbList",
+				"itemListElement": [
+					{"@type":"ListItem","position":1,"name":"Home","item":baseUrl},
+					{"@type":"ListItem","position":2,"name":"Gallery","item":baseUrl + 'index.html#gallery'},
+					{"@type":"ListItem","position":3,"name": titleText, "item": pageUrl}
+				]
+			};
+			const b = document.createElement('script'); b.type='application/ld+json'; b.textContent = JSON.stringify(breadcrumb);
+			document.head.appendChild(b);
+
+			// Product with multiple offers (prices mirrored from cart)
+			const prices = {
+				Metallic: { "20x40": 220, "24x36": 150, "20x30": 120, "16x24": 70 },
+				Acrylic:  { "20x40": 180, "24x36": 130, "20x30": 100, "16x24": 60 },
+				Canvas:   { "20x40": 180, "24x36": 130, "20x30": 100, "16x24": 60 }
+			};
+			const offers = [];
+			Object.entries(prices).forEach(([finish, sizeMap])=>{
+				Object.entries(sizeMap).forEach(([size, price])=>{
+					offers.push({
+						"@type":"Offer",
+						"priceCurrency":"USD",
+						"price": price,
+						"availability":"https://schema.org/InStock",
+						"itemCondition":"https://schema.org/NewCondition",
+						"sku": `${baseName}-${finish.toLowerCase()}-${size.replace(/\"/g,'')}`,
+						"url": pageUrl
+					});
+				});
+			});
+			const product = {
+				"@context": "https://schema.org",
+				"@type": "Product",
+				"name": titleText,
+				"image": pageUrl,
+				"description": `${titleText} premium wall art available in canvas, metal, and acrylic finishes.",
+				"brand": {"@type":"Brand","name":"Wild West Wall Art"},
+				"offers": offers
+			};
+			const p = document.createElement('script'); p.type='application/ld+json'; p.textContent = JSON.stringify(product);
+			document.head.appendChild(p);
+		})();
 	})();
 	</script>
 	<script>
