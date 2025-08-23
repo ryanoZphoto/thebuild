@@ -1,5 +1,5 @@
 [build]
-  command = "node scripts/generate-gallery.js && node scripts/copy-images.js && node scripts/generate-photo-pages.js && node scripts/generate-merchant-feed.js && echo 'Build complete'"
+  command = "node scripts/generate-gallery.js && node scripts/copy-images.js && node scripts/generate-photo-pages.js && node scripts/generate-gmc-source.js && node scripts/generate-merchant-feed.js && echo 'Build complete'"
 
 [dev]
-  command = "node scripts/generate-gallery.js && node scripts/copy-images.js && node scripts/generate-photo-pages.js && node scripts/generate-merchant-feed.js"  # For local dev
+  command = "node scripts/generate-gallery.js && node scripts/copy-images.js && node scripts/generate-photo-pages.js && node scripts/generate-gmc-source.js && node scripts/generate-merchant-feed.js"  # For local dev
