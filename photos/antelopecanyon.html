@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Antelopecanyon – Wild West Wall Art</title>
+  <meta name="robots" content="index,follow" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <nav class="nav" aria-label="Primary">
+    <div class="nav-inner">
+      <a class="nav-brand" href="/index.html">
+        <img src="/logo.png" alt="Wild West Wall Art logo" class="logo">
+        <span>Wild West Wall Art</span>
+      </a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">☰</button>
+      <ul id="nav-menu" class="nav-links">
+        <li><a href="/index.html">Home</a></li>
+        <li><a href="/gallery.html">Gallery</a></li>
+        <li><a href="/cart.html">Cart</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main style="padding: 1.5rem 1rem;">
+    <h1>Antelopecanyon</h1>
+    <figure>
+      <img src="/images/antelopecanyon.jpg" alt="Antelopecanyon" style="max-width:100%;height:auto" loading="eager"/>
+      <figcaption>Antelopecanyon</figcaption>
+    </figure>
+    <p><a class="order-cta" href="/cart.html?img=antelopecanyon.jpg&finish=canvas&title=Antelopecanyon">Order This Print</a></p>
+  </main>
+
+  <script>
+  (function(){
+    const btn = document.querySelector('.nav-toggle');
+    const menu = document.getElementById('nav-menu');
+    if (btn && menu) {
+      btn.addEventListener('click', () => {
+        const open = menu.classList.toggle('open');
+        btn.setAttribute('aria-expanded', String(open));
+      });
+    }
+  })();
+  </script>
+</body>
+</html>
