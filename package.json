@@ -9,4 +9,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC"
+  ,
+  "dependencies": {
+    "sharp": "^0.33.4"
+  }
 }
