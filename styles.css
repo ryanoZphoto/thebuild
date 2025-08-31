@@ -381,6 +381,12 @@ button:hover {
   background: #fff !important;
 }
 
+/* Ensure white pages have dark text and white background */
+body.white-bg {
+  background: #fff !important;
+  color: #111;
+}
+
 /* Larger photo previews */
 .preview-container {
   display: grid;

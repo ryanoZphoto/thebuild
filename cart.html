@@ -236,9 +236,17 @@
 			preview.innerHTML = '';
 			const finish = (form.elements.finish.value || 'Canvas').toLowerCase();
 			const baseName = img ? img.replace(/\.[^.]+$/, '') : '';
+			if (!baseName) {
+				const note = document.createElement('p');
+				note.textContent = 'Select a photo from the gallery to see a preview here.';
+				preview.appendChild(note);
+				return;
+			}
 			const folder = `${finish}_previews`;
 			const trySrcs = [
 				`${folder}/${baseName}_${finish}.jpg`,
+				`${folder}/${baseName}_${finish}.png`,
+				`${folder}/${baseName}_${finish}.jpeg`,
 				`images/${img}`
 			];
 			const el = document.createElement('img');

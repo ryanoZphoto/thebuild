@@ -157,7 +157,8 @@
             item.style.transform = `rotateY(${index % 2 === 0 ? -5 : 5}deg) translateZ(20px)`;
             item.innerHTML = `<img src="${src}" alt="${title}" class="canvas-img" loading="lazy" decoding="async">`;
             item.addEventListener('click', () => {
-              window.location.href = `photo-detail.html?img=${encodeURIComponent(file)}`;
+              const name = file.replace(/\.[^.]+$/, '');
+              window.location.href = `photos/${encodeURIComponent(name)}.html`;
             });
             item.addEventListener('mouseover', () => item.style.transform += ' scale(1.05) translateY(-10px)');
             item.addEventListener('mouseout', () => item.style.transform = `rotateY(${index % 2 === 0 ? -5 : 5}deg) translateZ(20px)`);
