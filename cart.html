@@ -231,7 +231,7 @@
 
 		// Show preview
 		const preview = document.getElementById('item-preview');
-		document.getElementById('item-title').textContent = `${titleParam} — ${form.elements.finish.value}`;
+		document.getElementById('item-title').textContent = `${form.elements.finish.value} Finish Print`;
 		function refreshPreview(){
 			preview.innerHTML = '';
 			const finish = (form.elements.finish.value || 'Canvas').toLowerCase();
@@ -263,7 +263,7 @@
 		}
 		refreshPreview();
 		form.elements.finish.addEventListener('change', () => {
-			document.getElementById('item-title').textContent = `${titleParam} — ${form.elements.finish.value}`;
+			document.getElementById('item-title').textContent = `${form.elements.finish.value} Finish Print`;
 			refreshSizeOptions();
 			refreshPreview();
 			updateTotal();
