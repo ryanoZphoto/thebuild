@@ -44,6 +44,11 @@ try {
 				issues++;
 				console.warn(`Type mismatch or unknown: ${file} -> detected=${type}, ext=${ext}`);
 			}
+			// Enforce JPG policy
+			if (!/^(jpg|jpeg)$/.test(normalizedExt)) {
+				issues++;
+				console.warn(`Non-JPG file detected (prefer .jpg): ${file}`);
+			}
 		} catch (e) {
 			issues++;
 			console.warn(`Failed to inspect ${file}:`, e.message);

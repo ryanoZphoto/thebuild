@@ -53,7 +53,7 @@
 	<nav class="nav" aria-label="Primary">
 		<div class="nav-inner">
 			<a class="nav-brand" href="index.html">
-				<img src="logo.png" alt="Wild West Wall Art logo" class="logo">
+				<img src="finlogo.png" alt="Wild West Wall Art logo" class="logo">
 				<span>Wild West Wall Art</span>
 			</a>
 			<button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">☰</button>
@@ -173,6 +173,7 @@
 			if (!img) return;
 			const baseUrl = 'https://ryanosmunphoto.com/';
 			const pageUrl = baseUrl + 'photo-detail.html?img=' + encodeURIComponent(img);
+			const imageUrl = baseUrl + 'images/' + encodeURIComponent(img);
 			// Breadcrumbs
 			const breadcrumb = {
 				"@context": "https://schema.org",
@@ -210,7 +211,7 @@
 				"@context": "https://schema.org",
 				"@type": "Product",
 				"name": titleText,
-				"image": pageUrl,
+				"image": imageUrl,
 				"description": `${titleText} premium wall art available in canvas, metal, and acrylic finishes.`,
 				"brand": {"@type":"Brand","name":"Wild West Wall Art"},
 				"offers": offers

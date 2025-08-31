@@ -29,7 +29,7 @@ function pageTemplate({ title, fileName }){
   <nav class="nav" aria-label="Primary">
     <div class="nav-inner">
       <a class="nav-brand" href="/index.html">
-        <img src="/logo.png" alt="Wild West Wall Art logo" class="logo">
+        <img src="/finlogo.png" alt="Wild West Wall Art logo" class="logo">
         <span>Wild West Wall Art</span>
       </a>
       <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">☰</button>

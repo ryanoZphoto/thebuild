@@ -5,7 +5,7 @@ Static site for Wild West Wall Art showcasing metal, acrylic, and canvas prints 
 For a full developer walkthrough of the codebase (file-by-file, what to edit, build system, and image conventions), see `DEV_README.md`.
 
 ### How the checkout works
-- **Dynamic PayPal SDK loading**: `index.html` loads the PayPal JS SDK at runtime and renders buttons only after the SDK finishes loading. This prevents race conditions and fixes “paypal is not defined”.
+- **Dynamic PayPal SDK loading**: `cart.html` loads the PayPal JS SDK at runtime and renders buttons only after the SDK finishes loading. This prevents race conditions and fixes “paypal is not defined”.
 - **Live-only environment**: The page always loads the SDK with the configured Live client ID. No sandbox fallback is used.
 - **Order details**: Product selection and totals are calculated client-side. Shipping address is validated before showing the PayPal window. On approval, we capture the transaction and submit the Netlify form with hidden fields for `paypal_order_id` and `paypal_payer_email`.
 - **Netlify form handling**: The order form posts to Netlify (`data-netlify="true"`) and redirects to `thankyou.html` via the form `action` attribute.
