@@ -31,10 +31,11 @@
     </div>
   </nav>
 
-  <main style="padding: 1.5rem 1rem;">
+  <main style="padding: 1.5rem 1rem; max-width: 1200px; margin: 0 auto;">
     <section id="gallery">
       <h2>Gallery</h2>
-      <div class="gallery-shelves"></div>
+      <p class="gallery-intro">Browse the gallery below. Click any image to preview it in Canvas, Metal, or Acrylic finishes and order your preferred option.</p>
+      <div id="gallery-grid" class="gallery-grid"></div>
     </section>
   </main>
 
@@ -51,64 +52,50 @@
     }
   })();
 
-  // Build gallery dynamically from generated list, 3 items per shelf
+  // Build gallery dynamically as a uniform grid of cards
   (function initGallery(){
     fetch('gallery-list.json')
       .then(response => response.json())
       .then(data => {
         const files = (data.images || []).slice();
-        const shelvesRoot = document.querySelector('.gallery-shelves');
-        if (!shelvesRoot) return;
+        const grid = document.getElementById('gallery-grid');
+        if (!grid) return;
         if (files.length === 0) {
           const msg = document.createElement('p');
           msg.textContent = 'No images available—add some to gallery_images/ and redeploy!';
-          shelvesRoot.appendChild(msg);
+          grid.appendChild(msg);
           return;
         }
 
-        function chunk(array, size){
-          const chunks = [];
-          for (let i=0; i<array.length; i+=size) chunks.push(array.slice(i, i+size));
-          return chunks;
-        }
+        files.forEach((file) => {
+          const name = file.replace(/\.[^.]+$/, '');
+          const src = `images/${file}`;
+          const title = name.replace(/[-_]+/g,' ').replace(/\b\w/g, m => m.toUpperCase());
+          const card = document.createElement('a');
+          card.href = `photos/${encodeURIComponent(name)}.html`;
+          card.className = 'gallery-card';
+          card.setAttribute('aria-label', title);
 
-        const groups = chunk(files, 3);
-        groups.forEach((group, groupIndex) => {
-          const shelfContainer = document.createElement('div');
-          shelfContainer.className = 'shelf-container';
-          const shelf = document.createElement('div');
-          shelf.className = 'shelf';
-          const items = document.createElement('div');
-          items.className = 'items';
-          shelfContainer.appendChild(shelf);
-          shelfContainer.appendChild(items);
-          shelvesRoot.appendChild(shelfContainer);
+          const img = document.createElement('img');
+          img.src = src; img.alt = title; img.loading = 'lazy'; img.decoding = 'async'; img.className = 'thumb';
+          img.addEventListener('load', () => img.classList.add('loaded'));
 
-          group.forEach((file, idx) => {
-            const src = `images/${file}`;
-            const title = file.replace(/\.[^.]+$/, '').replace(/[-_]+/g,' ').replace(/\b\w/g, m => m.toUpperCase());
-            const item = document.createElement('div');
-            item.className = 'shelf-item';
-            const tilt = (groupIndex * 3 + idx) % 2 === 0 ? -5 : 5;
-            item.style.transform = `rotateY(${tilt}deg) translateZ(20px)`;
-            item.innerHTML = `<img src="${src}" alt="${title}" class="canvas-img" loading="lazy" decoding="async">`;
-            item.addEventListener('click', () => {
-              const name = file.replace(/\.[^.]+$/, '');
-              window.location.href = `photos/${encodeURIComponent(name)}.html`;
-            });
-            item.addEventListener('mouseover', () => item.style.transform += ' scale(1.05) translateY(-10px)');
-            item.addEventListener('mouseout', () => item.style.transform = `rotateY(${tilt}deg) translateZ(20px)`);
-            items.appendChild(item);
-          });
+          const cap = document.createElement('div');
+          cap.className = 'caption';
+          cap.textContent = title;
+
+          card.appendChild(img);
+          card.appendChild(cap);
+          grid.appendChild(card);
         });
       })
       .catch(err => {
         console.error('Error loading gallery list:', err);
-        const shelvesRoot = document.querySelector('.gallery-shelves');
-        if (shelvesRoot) {
+        const grid = document.getElementById('gallery-grid');
+        if (grid) {
           const msg = document.createElement('p');
           msg.textContent = 'Error loading gallery—please check console.';
-          shelvesRoot.appendChild(msg);
+          grid.appendChild(msg);
         }
       });
   })();
