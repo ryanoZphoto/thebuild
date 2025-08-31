@@ -15,7 +15,6 @@ function titleFromFile(file){
 function pageTemplate({ title, fileName }){
 	const imagePath = `/images/${fileName}`;
 	const safeTitle = title;
-	const cartUrl = `/cart.html?img=${encodeURIComponent(fileName)}&finish=canvas&title=${encodeURIComponent(title)}`;
 	return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,12 +42,14 @@ function pageTemplate({ title, fileName }){
   </nav>
 
   <main style="padding: 1.5rem 1rem;">
-    <h1>${safeTitle}</h1>
-    <figure>
-      <img src="${imagePath}" alt="${safeTitle}" style="max-width:100%;height:auto" loading="eager"/>
-      <figcaption>${safeTitle}</figcaption>
-    </figure>
-    <p><a class="order-cta" href="${cartUrl}">Order This Print</a></p>
+    <h1 id="photo-title">${safeTitle}</h1>
+    <div class="finish-tabs" role="tablist" aria-label="Finish options">
+      <button data-finish="canvas" class="active" role="tab" aria-selected="true">Canvas</button>
+      <button data-finish="metal" role="tab" aria-selected="false">Metal</button>
+      <button data-finish="acrylic" role="tab" aria-selected="false">Acrylic</button>
+    </div>
+    <div id="preview-container" class="preview-container" aria-live="polite"></div>
+    <a id="order-btn" class="order-cta" href="#">Order This Print</a>
   </main>
 
   <script>
@@ -61,6 +62,80 @@ function pageTemplate({ title, fileName }){
         btn.setAttribute('aria-expanded', String(open));
       });
     }
+  })();
+  </script>
+  <script>
+  (function(){
+    var img = ${JSON.stringify(fileName)};
+    var baseName = img.replace(/\.[^.]+$/, '');
+    var titleText = ${JSON.stringify(safeTitle)};
+    document.getElementById('photo-title').textContent = titleText;
+
+    var previewContainer = document.getElementById('preview-container');
+    var orderBtn = document.getElementById('order-btn');
+    var currentFinish = 'canvas';
+
+    function imgExists(src){
+      return new Promise(function(resolve){
+        var i = new Image();
+        i.onload = function(){ resolve(src); };
+        i.onerror = function(){ resolve(null); };
+        i.src = src;
+      });
+    }
+
+    async function loadFinishVariants(finish){
+      currentFinish = finish;
+      previewContainer.innerHTML = '';
+      var folder = '/' + finish + '_previews';
+      var candidates = [];
+      var exts = ['jpg','jpeg','png'];
+      exts.forEach(function(ext){ candidates.push(folder + '/' + baseName + '_' + finish + '.' + ext); });
+      for (var n=1; n<=2; n++) { exts.forEach(function(ext){ candidates.push(folder + '/' + baseName + '_' + finish + n + '.' + ext); }); }
+      exts.forEach(function(ext){ candidates.push(folder + '/' + baseName + '_' + finish + '_variant.' + ext); });
+
+      var checks = await Promise.all(candidates.map(imgExists));
+      var valid = checks.filter(Boolean).slice(0, 6);
+      if (valid.length === 0) {
+        var el = document.createElement('img');
+        el.src = ${JSON.stringify(imagePath)};
+        el.alt = titleText + ' (' + finish + ')';
+        el.loading = 'lazy';
+        el.decoding = 'async';
+        previewContainer.style.gridTemplateColumns = 'repeat(auto-fit, minmax(300px, 1fr))';
+        previewContainer.appendChild(el);
+        return;
+      }
+      var colMin = valid.length >= 3 ? 300 : (valid.length === 2 ? 350 : 480);
+      previewContainer.style.gridTemplateColumns = 'repeat(auto-fit, minmax(' + colMin + 'px, 1fr))';
+      valid.forEach(function(src){
+        var el = document.createElement('img');
+        el.src = src;
+        el.alt = titleText + ' (' + finish + ')';
+        el.loading = 'lazy';
+        el.decoding = 'async';
+        previewContainer.appendChild(el);
+      });
+    }
+
+    document.querySelectorAll('.finish-tabs button').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        document.querySelectorAll('.finish-tabs button').forEach(function(b){ b.classList.remove('active'); });
+        btn.classList.add('active');
+        loadFinishVariants(btn.getAttribute('data-finish'));
+      });
+    });
+
+    orderBtn.addEventListener('click', function(e){
+      e.preventDefault();
+      var url = new URL('/cart.html', window.location.origin);
+      url.searchParams.set('img', img);
+      url.searchParams.set('finish', currentFinish);
+      url.searchParams.set('title', titleText);
+      window.location.href = url.pathname + url.search;
+    });
+
+    loadFinishVariants('canvas');
   })();
   </script>
 </body>
