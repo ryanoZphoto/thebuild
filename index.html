@@ -9,8 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="preload" as="video" href="hero-1p5x.mp4" type="video/mp4">
-  <link rel="preload" as="image" href="gallery_images/superstitionmtn.jpg">
+  <link rel="preload" as="image" href="images/superstitionmtn.jpg">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -74,7 +73,7 @@
   <!-- Video hero (crisp, lightweight) -->
   <section id="hero" aria-label="Featured">
     <div class="hero-video">
-      <video class="hero-media" autoplay muted loop playsinline preload="metadata" poster="gallery_images/superstitionmtn.jpg" aria-hidden="true" controlslist="nodownload nofullscreen noremoteplayback"></video>
+      <video class="hero-media" autoplay muted loop playsinline preload="metadata" poster="images/superstitionmtn.jpg" aria-hidden="true" controlslist="nodownload nofullscreen noremoteplayback"></video>
     </div>
     <div class="hero-overlay modern">
       <div class="overlay-inner">
@@ -151,7 +150,7 @@
             return;
           }
           files.forEach((file, index) => {
-            const src = `gallery_images/${file}`;
+            const src = `images/${file}`;
             const title = file.replace(/\.[^.]+$/, '').replace(/[-_]+/g,' ').replace(/\b\w/g, m => m.toUpperCase());
             const item = document.createElement('div');
             item.className = 'shelf-item';

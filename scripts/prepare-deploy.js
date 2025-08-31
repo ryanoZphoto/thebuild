@@ -43,7 +43,7 @@ function writeIndexTxt() {
 	copyDir(path.join(root, 'legal'), path.join(out, 'legal'));
 
 	// Core assets/config
-	['styles.css', 'finlogo.png', 'robots.txt', '_headers', '_redirects', 'sitemap.xml'].forEach(f => {
+	['styles.css', 'finlogo.png', 'robots.txt', '_headers', '_redirects', 'sitemap.xml', 'gallery-list.json', 'hero-1p5x.mp4'].forEach(f => {
 		const src = path.join(root, f);
 		if (fs.existsSync(src)) copyFile(src, path.join(out, f));
 	});

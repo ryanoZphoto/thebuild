@@ -123,7 +123,7 @@
 			const valid = checks.filter(Boolean);
 
 			if (valid.length === 0) {
-				const fallback = `gallery_images/${img}`;
+				const fallback = `images/${img}`;
 				const el = document.createElement('img');
 				el.src = fallback;
 				el.alt = `${titleText} (${finish})`;

@@ -85,7 +85,7 @@
           shelvesRoot.appendChild(shelfContainer);
 
           group.forEach((file, idx) => {
-            const src = `gallery_images/${file}`;
+            const src = `images/${file}`;
             const title = file.replace(/\.[^.]+$/, '').replace(/[-_]+/g,' ').replace(/\b\w/g, m => m.toUpperCase());
             const item = document.createElement('div');
             item.className = 'shelf-item';
