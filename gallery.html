@@ -71,21 +71,34 @@
           const name = file.replace(/\.[^.]+$/, '');
           const src = `images/${file}`;
           const title = name.replace(/[-_]+/g,' ').replace(/\b\w/g, m => m.toUpperCase());
-          const card = document.createElement('a');
-          card.href = `photos/${encodeURIComponent(name)}.html`;
+          const card = document.createElement('div');
           card.className = 'gallery-card';
+          card.setAttribute('tabindex', '0');
           card.setAttribute('aria-label', title);
+
+          const linkDefault = document.createElement('a');
+          linkDefault.href = `photos/${encodeURIComponent(name)}.html?finish=canvas`;
+          linkDefault.setAttribute('aria-hidden','true');
+          linkDefault.tabIndex = -1;
 
           const img = document.createElement('img');
           img.src = src; img.alt = title; img.loading = 'lazy'; img.decoding = 'async'; img.className = 'thumb';
           img.addEventListener('load', () => img.classList.add('loaded'));
 
-          const cap = document.createElement('div');
-          cap.className = 'caption';
-          cap.textContent = title;
+          const actions = document.createElement('div');
+          actions.className = 'actions';
+          const finishes = ['canvas','metal','acrylic'];
+          finishes.forEach(f => {
+            const a = document.createElement('a');
+            a.href = `photos/${encodeURIComponent(name)}.html?finish=${f}`;
+            a.className = 'pill';
+            a.textContent = f.charAt(0).toUpperCase() + f.slice(1);
+            actions.appendChild(a);
+          });
 
-          card.appendChild(img);
-          card.appendChild(cap);
+          linkDefault.appendChild(img);
+          card.appendChild(linkDefault);
+          card.appendChild(actions);
           grid.appendChild(card);
         });
       })

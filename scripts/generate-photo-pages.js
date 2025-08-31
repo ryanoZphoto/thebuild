@@ -135,7 +135,21 @@ function pageTemplate({ title, fileName }){
       window.location.href = url.pathname + url.search;
     });
 
-    loadFinishVariants('canvas');
+    // Honor finish parameter if provided
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var initial = (params.get('finish') || 'canvas').toLowerCase();
+      var btn = document.querySelector('.finish-tabs button[data-finish="' + initial + '"]');
+      if (btn) {
+        document.querySelectorAll('.finish-tabs button').forEach(function(b){ b.classList.remove('active'); });
+        btn.classList.add('active');
+        loadFinishVariants(initial);
+      } else {
+        loadFinishVariants('canvas');
+      }
+    } catch (e) {
+      loadFinishVariants('canvas');
+    }
   })();
   </script>
 </body>
