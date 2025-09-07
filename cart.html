@@ -234,7 +234,10 @@
 		document.getElementById('item-title').textContent = `${form.elements.finish.value} Finish Print`;
 		function refreshPreview(){
 			preview.innerHTML = '';
-			const finish = (form.elements.finish.value || 'Canvas').toLowerCase();
+			// Map display finish to canonical slug used in filenames/folders
+			const displayFinish = (form.elements.finish.value || 'Canvas');
+			const finishSlugMap = { Canvas: 'canvas', Metallic: 'metal', Acrylic: 'acrylic' };
+			const finishSlug = finishSlugMap[displayFinish] || 'canvas';
 			const baseName = img ? img.replace(/\.[^.]+$/, '') : '';
 			if (!baseName) {
 				const note = document.createElement('p');
@@ -242,15 +245,15 @@
 				preview.appendChild(note);
 				return;
 			}
-			const folder = `${finish}_previews`;
+			const folder = `${finishSlug}_previews`;
 			const trySrcs = [
-				`${folder}/${baseName}_${finish}.jpg`,
-				`${folder}/${baseName}_${finish}.png`,
-				`${folder}/${baseName}_${finish}.jpeg`,
+				`${folder}/${baseName}_${finishSlug}.jpg`,
+				`${folder}/${baseName}_${finishSlug}.png`,
+				`${folder}/${baseName}_${finishSlug}.jpeg`,
 				`images/${img}`
 			];
 			const el = document.createElement('img');
-			el.alt = `${titleParam} (${finish})`;
+			el.alt = `${titleParam} (${displayFinish})`;
 			el.loading = 'lazy'; el.decoding = 'async';
 			let i = 0;
 			function loadNext(){
