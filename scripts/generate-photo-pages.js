@@ -24,7 +24,7 @@ function pageTemplate({ title, fileName }){
   <meta name="robots" content="index,follow" />
   <link rel="stylesheet" href="/styles.css" />
 </head>
-<body>
+<body class="white-bg">
   <nav class="nav" aria-label="Primary">
     <div class="nav-inner">
       <a class="nav-brand" href="/index.html">
@@ -91,7 +91,7 @@ function pageTemplate({ title, fileName }){
       var candidates = [];
       var exts = ['jpg','jpeg','png'];
       exts.forEach(function(ext){ candidates.push(folder + '/' + baseName + '_' + finish + '.' + ext); });
-      for (var n=1; n<=2; n++) { exts.forEach(function(ext){ candidates.push(folder + '/' + baseName + '_' + finish + n + '.' + ext); }); }
+      for (var n=1; n<=3; n++) { exts.forEach(function(ext){ candidates.push(folder + '/' + baseName + '_' + finish + n + '.' + ext); }); }
       exts.forEach(function(ext){ candidates.push(folder + '/' + baseName + '_' + finish + '_variant.' + ext); });
 
       var checks = await Promise.all(candidates.map(imgExists));
