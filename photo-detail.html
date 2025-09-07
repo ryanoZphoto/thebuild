@@ -109,15 +109,14 @@
 
 			const folder = `${finish}_previews`;
 			const candidates = [];
-			const exts = ['jpg','jpeg','png'];
 			// base file (no number)
-			exts.forEach(ext => candidates.push(`${folder}/${baseName}_${finish}.${ext}`));
-			// numbered variants 1..2 (limit to reduce 404 noise)
+			candidates.push(`${folder}/${baseName}_${finish}.jpg`);
+			// numbered variants 1..2
 			for (let n=1; n<=2; n++) {
-				exts.forEach(ext => candidates.push(`${folder}/${baseName}_${finish}${n}.${ext}`));
+				candidates.push(`${folder}/${baseName}_${finish}${n}.jpg`);
 			}
 			// explicit variant suffix
-			exts.forEach(ext => candidates.push(`${folder}/${baseName}_${finish}_variant.${ext}`));
+			candidates.push(`${folder}/${baseName}_${finish}_variant.jpg`);
 
 			const checks = await Promise.all(candidates.map(imgExists));
 			const valid = checks.filter(Boolean).slice(0, 6);

@@ -89,10 +89,9 @@ function pageTemplate({ title, fileName }){
       previewContainer.innerHTML = '';
       var folder = '/' + finish + '_previews';
       var candidates = [];
-      var exts = ['jpg','jpeg','png'];
-      exts.forEach(function(ext){ candidates.push(folder + '/' + baseName + '_' + finish + '.' + ext); });
-      for (var n=1; n<=3; n++) { exts.forEach(function(ext){ candidates.push(folder + '/' + baseName + '_' + finish + n + '.' + ext); }); }
-      exts.forEach(function(ext){ candidates.push(folder + '/' + baseName + '_' + finish + '_variant.' + ext); });
+      candidates.push(folder + '/' + baseName + '_' + finish + '.jpg');
+      for (var n=1; n<=3; n++) { candidates.push(folder + '/' + baseName + '_' + finish + n + '.jpg'); }
+      candidates.push(folder + '/' + baseName + '_' + finish + '_variant.jpg');
 
       var checks = await Promise.all(candidates.map(imgExists));
       var valid = checks.filter(Boolean).slice(0, 6);
