@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Gallery - Wild West Wall Art</title>
+  <link rel="stylesheet" href="styles.css" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17501059263"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-17501059263');
+</script></head>
+<body>
+  <nav class="nav" aria-label="Primary">
+    <div class="nav-inner">
+      <a class="nav-brand" href="index.html">
+        <img src="finlogo.png" alt="Wild West Wall Art logo" class="logo">
+        <span>Wild West Wall Art</span>
+      </a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">☰</button>
+      <ul id="nav-menu" class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="gallery.html" aria-current="page">Gallery</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main style="padding: 1.5rem 1rem; max-width: 1200px; margin: 0 auto;">
+    <section id="gallery">
+      <h2>Gallery</h2>
+      <p class="gallery-intro">Browse the gallery below. Click any image to preview it in Canvas, Metal, or Acrylic finishes and order your preferred option.</p>
+      <div id="gallery-grid" class="gallery-grid"></div>
+    </section>
+  </main>
+
+  <script>
+  // Mobile nav toggle
+  (function(){
+    const btn = document.querySelector('.nav-toggle');
+    const menu = document.getElementById('nav-menu');
+    if (btn && menu) {
+      btn.addEventListener('click', () => {
+        const open = menu.classList.toggle('open');
+        btn.setAttribute('aria-expanded', String(open));
+      });
+    }
+  })();
+
+  // Build gallery dynamically as a uniform grid of cards
+  (function initGallery(){
+    fetch('gallery-list.json')
+      .then(response => response.json())
+      .then(data => {
+        const files = (data.images || []).slice();
+        const grid = document.getElementById('gallery-grid');
+        if (!grid) return;
+        if (files.length === 0) {
+          const msg = document.createElement('p');
+          msg.textContent = 'No images available—add some to gallery_images/ and redeploy!';
+          grid.appendChild(msg);
+          return;
+        }
+
+        files.forEach((file) => {
+          const name = file.replace(/\.[^.]+$/, '');
+          const src = `images/${file}`;
+          const title = name.replace(/[-_]+/g,' ').replace(/\b\w/g, m => m.toUpperCase());
+          const card = document.createElement('div');
+          card.className = 'gallery-card';
+          card.setAttribute('tabindex', '0');
+          card.setAttribute('aria-label', title);
+
+          const linkDefault = document.createElement('a');
+          linkDefault.href = `photos/${encodeURIComponent(name)}.html?finish=canvas`;
+          linkDefault.setAttribute('aria-hidden','true');
+          linkDefault.tabIndex = -1;
+
+          const img = document.createElement('img');
+          img.src = src; img.alt = title; img.loading = 'lazy'; img.decoding = 'async'; img.className = 'thumb';
+          img.addEventListener('load', () => img.classList.add('loaded'));
+
+          const actions = document.createElement('div');
+          actions.className = 'actions';
+          const finishes = ['canvas','metal','acrylic'];
+          finishes.forEach(f => {
+            const a = document.createElement('a');
+            a.href = `photos/${encodeURIComponent(name)}.html?finish=${f}`;
+            a.className = 'pill';
+            a.textContent = f.charAt(0).toUpperCase() + f.slice(1);
+            actions.appendChild(a);
+          });
+
+          linkDefault.appendChild(img);
+          card.appendChild(linkDefault);
+          card.appendChild(actions);
+          grid.appendChild(card);
+        });
+      })
+      .catch(err => {
+        console.error('Error loading gallery list:', err);
+        const grid = document.getElementById('gallery-grid');
+        if (grid) {
+          const msg = document.createElement('p');
+          msg.textContent = 'Error loading gallery—please check console.';
+          grid.appendChild(msg);
+        }
+      });
+  })();
+  </script>
+</body>
+</html>
+
+

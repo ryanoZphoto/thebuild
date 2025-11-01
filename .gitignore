@@ -1,1 +1,13 @@
+node_modules/
+deploy/
+images/
+photos/
+feeds/merchant_feed.csv
+gallery-list.json
+sitemap.xml
+.DS_Store
+Thumbs.db
 
+
+# Local Netlify folder
+.netlify

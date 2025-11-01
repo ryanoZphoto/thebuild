@@ -1,4 +1,6 @@
 [build]
-  base = "."
-  publish = "."
-  command = ""
+  command = "npm run deploy"
+  publish = "deploy"
+
+[dev]
+  command = "npm run build && node scripts/prepare-deploy.js"  # For local dev

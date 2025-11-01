@@ -1,167 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  {
+  "Description": "Domain ownership verification file for Microsoft 365 - place in the website root",
+  "Domain": "ryanosmunphoto.com",
+  "Id": "944d373f-60d1-46e4-a443-e9a7db2a635a"
+  }
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Wild West Wall Art</title>
+  <title>Western Wall Art | Metal, Acrylic & Canvas Prints – Wild West Wall Art</title>
+  <meta name="description" content="Premium Western wall art prints in metal, acrylic, and canvas. Ready-to-hang quality. Free shipping on orders over $100 or $10 flat." />
   <link rel="stylesheet" href="styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="images/superstitionmtn.jpg">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Wild West Wall Art",
+    "url": "https://ryanosmunphoto.com/",
+    "logo": "https://ryanosmunphoto.com/finlogo.png",
+    "sameAs": [
+      "https://www.instagram.com/wildwestwallart/",
+      "https://www.facebook.com/737106739485705"
+    ],
+    "contactPoint": [{
+      "@type": "ContactPoint",
+      "contactType": "customer support",
+      "telephone": "+1-480-235-0732",
+      "email": "ryan@ryanosmunphoto.com"
+    }],
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Mesa",
+      "addressRegion": "AZ",
+      "addressCountry": "US"
+    }
+  }
+  </script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-67REFDBJP3"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} 
+    gtag('js', new Date());
+    gtag('config', 'G-67REFDBJP3');
+  </script>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17501059263"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-17501059263');
+</script>
 </head>
 <body>
   <nav class="nav" aria-label="Primary">
     <div class="nav-inner">
-      <a class="nav-brand" href="#">
-        <img src="logo.png" alt="Wild West Wall Art logo" class="logo">
+      <a class="nav-brand" href="index.html">
+        <img src="finlogo.png" alt="Wild West Wall Art logo" class="logo">
         <span>Wild West Wall Art</span>
       </a>
       <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">☰</button>
       <ul id="nav-menu" class="nav-links">
-        <li><a href="#gallery">Gallery</a></li>
-        <li><a href="#pricing">Pricing</a></li>
-        <li><a href="#order">Order</a></li>
-        <li><a href="mailto:ryan@ryanosmunphoto.com">Contact</a></li>
+        <li><a href="index.html" aria-current="page">Home</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="contact.html">Contact</a></li>
       </ul>
     </div>
   </nav>
 
+  <!-- Video hero (crisp, lightweight) -->
   <section id="hero" aria-label="Featured">
-    <video class="hero-video" src="hero-1p5x.mp4" autoplay muted loop playsinline preload="metadata"></video>
-    <div class="hero-overlay">
-      <h1>Iconic Western Landscapes</h1>
-      <p>Premium metal, acrylic, and canvas prints.</p>
-      <a class="cta" href="#order">Order a Print</a>
+    <div class="hero-video">
+      <video class="hero-media" autoplay muted loop playsinline preload="metadata" poster="images/superstitionmtn.jpg" aria-hidden="true" controlslist="nodownload nofullscreen noremoteplayback"></video>
+    </div>
+    <div class="hero-overlay modern">
+      <div class="overlay-inner">
+        <h1 class="hero-title">Iconic Western Landscapes</h1>
+        <p class="hero-sub">Premium metal, acrylic, and canvas prints. Ready to hang.</p>
+        <div class="hero-ctas">
+          <a class="btn-primary" href="gallery.html">Explore Gallery</a>
+          <a class="btn-secondary" href="cart.html">Shop Bestsellers</a>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section id="gallery">
-    <h2>Gallery</h2>
-    <div class="grid" id="gallery-grid"></div>
-    <p class="selected-display">Selected photo: <strong id="selected-title">None</strong></p>
-  </section>
-
-  <section id="pricing">
-    <h2>Pricing</h2>
-    <div class="pricing">
-      <h3>Metallic</h3>
-      <ul>
-        <li>20x40" - $220</li>
-        <li>24x36" - $150</li>
-        <li>20x30" - $120</li>
-        <li>16x24" - $70</li>
-      </ul>
-      <h3>Acrylic</h3>
-      <ul>
-        <li>20x40" - $180</li>
-        <li>24x36" - $130</li>
-        <li>20x30" - $100</li>
-        <li>16x24" - $60</li>
-      </ul>
-      <h3>Canvas</h3>
-      <ul>
-        <li>20x40" - $180</li>
-        <li>24x36" - $130</li>
-        <li>20x30" - $100</li>
-        <li>16x24" - $60</li>
-      </ul>
+  <!-- About -->
+  <section id="about">
+    <div class="about-content">
+      <h2>About Wild West Wall Art</h2>
+      <p>Discover stunning photography from the American Southwest, printed on high-quality metal, acrylic, or canvas. Each piece brings the rugged beauty of the Wild West into your home.</p>
+      <a href="gallery.html" class="cta">Start Your Order</a>
     </div>
   </section>
 
-  <section id="order">
-    <h2>Place an Order</h2>
-    <form name="order" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thankyou.html">
-      <input type="hidden" name="form-name" value="order">
-      <p style="display:none">
-        <label>Don’t fill this out: <input name="bot-field"></label>
-      </p>
-      <p>
-        <label>Name:<br>
-          <input type="text" name="name" required>
-        </label>
-      </p>
-      <p>
-        <label>Email:<br>
-          <input type="email" name="email" required>
-        </label>
-      </p>
-      <p>
-        <label>Finish:<br>
-          <select name="finish" required>
-            <option value="Metallic">Metallic</option>
-            <option value="Acrylic">Acrylic</option>
-            <option value="Canvas">Canvas</option>
-          </select>
-        </label>
-      </p>
-      <p>
-        <label>Size:<br>
-          <select name="size" required>
-            <option value="20x40">20x40"</option>
-            <option value="24x36">24x36"</option>
-            <option value="20x30">20x30"</option>
-            <option value="16x24">16x24"</option>
-          </select>
-        </label>
-      </p>
-      <p>
-        <label>Quantity:<br>
-          <input type="number" name="quantity" value="1" min="1" step="1">
-        </label>
-      </p>
-      <p>
-        <label>Message:<br>
-          <textarea name="message"></textarea>
-        </label>
-      </p>
 
-      <fieldset>
-        <legend>Shipping Address</legend>
-        <p>
-          <label>Address Line 1:<br>
-            <input type="text" name="address_line_1" required>
-          </label>
-        </p>
-        <p>
-          <label>Address Line 2 (optional):<br>
-            <input type="text" name="address_line_2">
-          </label>
-        </p>
-        <p>
-          <label>City:<br>
-            <input type="text" name="city" required>
-          </label>
-        </p>
-        <p>
-          <label>State (2-letter):<br>
-            <input type="text" name="state" maxlength="2" pattern="[A-Za-z]{2}" required>
-          </label>
-        </p>
-        <p>
-          <label>Postal Code:<br>
-            <input type="text" name="postal_code" pattern="\d{5}(-\d{4})?" required>
-          </label>
-        </p>
-        <p>
-          <label>Country:<br>
-            <input type="text" name="country_code" value="US" maxlength="2" pattern="[A-Za-z]{2}" required>
-          </label>
-        </p>
-      </fieldset>
-
-      <p id="total"></p>
-      <input type="hidden" name="photo_title">
-      <input type="hidden" name="paypal_order_id">
-      <input type="hidden" name="paypal_payer_email">
-      <div id="paypal-button-container"></div>
-    </form>
-  </section>
+  
 
   <footer>
-    <p>&copy; 2024 Wild West Wall Art</p>
+    <p>&copy; 2024 Wild West Wall Art · <a href="legal/shipping.html">Shipping</a> · <a href="legal/returns.html">Returns</a></p>
   </footer>
 
-  <!-- PayPal SDK loader (dynamic) -->
   <script>
     // Mobile nav toggle
     (function(){
@@ -175,181 +121,66 @@
       }
     })();
 
-    (function loadPayPalSdk(){
-      const LIVE_CLIENT_ID = 'AcosS2AbZFUgYmDEx1dh9piJdWL3jM2u0RCRdjf5rJ0YerCZluqwthmTzCzWmov46D39CmL6N8Gysh6a';
-      const clientId = LIVE_CLIENT_ID; // always use live client id
-      const url = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(clientId)}&currency=USD&intent=capture&components=buttons&enable-funding=card&commit=true`;
-      console.log('Loading PayPal SDK:', url);
-      const s = document.createElement('script');
-      s.src = url;
-      s.async = true;
-      s.onload = function(){
-        try { renderPayPalButtons(); } catch (e) { console.error('Render PayPal failed', e); }
-      };
-      s.onerror = function(){
-        console.error('Failed to load PayPal SDK', url);
-        alert('Unable to load PayPal. Please refresh or try again later.');
-      };
-      document.head.appendChild(s);
-    })();
-
-    const prices = {
-      Metallic: { "20x40": 220, "24x36": 150, "20x30": 120, "16x24": 70 },
-      Acrylic: { "20x40": 180, "24x36": 130, "20x30": 100, "16x24": 60 },
-      Canvas: { "20x40": 180, "24x36": 130, "20x30": 100, "16x24": 60 }
-    };
-    const shippingCost = 10;
-
-    const finishSelect = document.querySelector('select[name="finish"]');
-    const sizeSelect = document.querySelector('select[name="size"]');
-    const quantityInput = document.querySelector('input[name="quantity"]');
-    const totalDisplay = document.getElementById('total');
-
-    function updateTotal() {
-      const finish = finishSelect.value;
-      const size = sizeSelect.value;
-      const quantity = Math.max(parseInt(quantityInput.value, 10) || 1, 1);
-      const itemPrice = prices[finish][size];
-      const total = itemPrice * quantity + shippingCost;
-      totalDisplay.textContent = `Total: $${total.toFixed(2)} (including $${shippingCost} shipping)`;
-      return { finish, size, itemPrice, quantity, total };
-    }
-
-    finishSelect.addEventListener('change', updateTotal);
-    sizeSelect.addEventListener('change', updateTotal);
-    quantityInput.addEventListener('input', updateTotal);
-    updateTotal();
-
-    function val(name) {
-      return document.querySelector(`[name="${name}"]`)?.value.trim() || '';
-    }
-
-    function validateShipping() {
-      const required = ['address_line_1','city','state','postal_code','country_code'];
-      return required.every(f => val(f));
-    }
-
     // Build gallery dynamically from folder list
-    const galleryGrid = document.getElementById('gallery-grid');
     const galleryImages = [];
-    const selectedTitleEl = document.getElementById('selected-title');
-    const photoTitleInput = document.querySelector('input[name="photo_title"]');
-    function selectPhoto(img) {
-      galleryImages.forEach(i => i.classList.toggle('selected', i === img));
-      const title = img.getAttribute('alt') || 'Photo';
-      if (selectedTitleEl) selectedTitleEl.textContent = title;
-      if (photoTitleInput) photoTitleInput.value = title;
-    }
-    (function initGallery(){
-      const files = [
-        '20x30costco.jpg','abstract.jpg','antelopecanyon.jpg','buffalo.jpg','church.jpg','edited-4.jpg','hvaasupai.jpg','monument costco.jpg','rainbowstorm.jpg','sedona-moon.jpg','superstitionmtn.png','weevers needle 2030.jpg'
+
+    // Initialize hero video with multiple sources for clarity
+    (function initHeroVideo(){
+      const v = document.querySelector('video.hero-media');
+      if (!v) return;
+      const sources = [
+        { src: 'hero-1p5x.mp4', type: 'video/mp4' },
+        // If you add a higher quality WebM, list it first for capable browsers
+        // { src: 'hero-1p5x.webm', type: 'video/webm' },
       ];
-      files.forEach(file => {
-        const src = `gallery_images/${file}`;
-        const title = file.replace(/\.[^.]+$/, '').replace(/[-_]+/g,' ').replace(/\b\w/g, m => m.toUpperCase());
-        const img = new Image();
-        img.src = src;
-        img.alt = title;
-        img.loading = 'lazy';
-        img.decoding = 'async';
-        img.addEventListener('click', () => selectPhoto(img));
-        galleryImages.push(img);
-        galleryGrid.appendChild(img);
+      sources.forEach(s => {
+        const el = document.createElement('source');
+        el.src = s.src; el.type = s.type; v.appendChild(el);
       });
-      if (galleryImages.length) selectPhoto(galleryImages[0]);
+      v.style.transform = 'translateZ(0)';
     })();
 
-    // Stepper: finish and size pretty buttons synced with selects
-    function syncOptionGroup(containerId, selectEl) {
-      const container = document.getElementById(containerId);
-      if (!container || !selectEl) return;
-      container.addEventListener('click', (e) => {
-        const btn = e.target.closest('.option');
-        if (!btn) return;
-        container.querySelectorAll('.option').forEach(b => b.classList.remove('selected'));
-        btn.classList.add('selected');
-        const value = btn.getAttribute('data-value');
-        selectEl.value = value;
-        updateTotal();
-      });
-    }
-    syncOptionGroup('finish-options', finishSelect);
-    syncOptionGroup('size-options', sizeSelect);
-
-    function renderPayPalButtons() {
-      if (!window.paypal || !window.paypal.Buttons) {
-        throw new Error('PayPal SDK not available');
-      }
-
-      window.paypal.Buttons({
-      createOrder: function(data, actions) {
-        if (!validateShipping()) {
-          alert('Please fill in all required shipping address fields.');
-          throw new Error('Missing shipping fields');
-        }
-
-        const { finish, size, itemPrice, quantity, total } = updateTotal();
-        const title = (photoTitleInput && photoTitleInput.value) || 'Photo';
-
-        const address = {
-          address_line_1: val('address_line_1'),
-          admin_area_2: val('city'),
-            admin_area_1: val('state').toUpperCase(),
-          postal_code: val('postal_code'),
-          country_code: val('country_code').toUpperCase()
-        };
-        const line2 = val('address_line_2');
-        if (line2) address.address_line_2 = line2;
-
-        return actions.order.create({
-          intent: 'CAPTURE',
-          purchase_units: [{
-            amount: {
-              value: total.toFixed(2),
-              currency_code: 'USD',
-              breakdown: {
-                item_total: { currency_code: 'USD', value: (itemPrice * quantity).toFixed(2) },
-                shipping: { currency_code: 'USD', value: shippingCost.toFixed(2) }
-              }
-            },
-            items: [{
-              name: `Photo: ${title} — ${finish} ${size}\" Print`,
-              unit_amount: { currency_code: 'USD', value: itemPrice.toFixed(2) },
-              quantity: quantity.toString()
-            }],
-            shipping: {
-              name: { full_name: val('name') || 'Customer' },
-              address
-            }
-          }],
-          application_context: {
-            shipping_preference: 'SET_PROVIDED_ADDRESS',
-            user_action: 'PAY_NOW'
+    // Update initGallery to create shelf items
+    (function initGallery(){
+      fetch('gallery-list.json')
+        .then(response => response.json())
+        .then(data => {
+          const files = data.images || [];
+          const itemsContainer = document.querySelector('.items');
+          if (!itemsContainer) return;
+          if (files.length === 0) {
+            const msg = document.createElement('p');
+            msg.textContent = 'No images available—add some to gallery_images/ and redeploy!';
+            itemsContainer.appendChild(msg);
+            return;
+          }
+          files.forEach((file, index) => {
+            const src = `images/${file}`;
+            const title = file.replace(/\.[^.]+$/, '').replace(/[-_]+/g,' ').replace(/\b\w/g, m => m.toUpperCase());
+            const item = document.createElement('div');
+            item.className = 'shelf-item';
+            item.style.transform = `rotateY(${index % 2 === 0 ? -5 : 5}deg) translateZ(20px)`;
+            item.innerHTML = `<img src="${src}" alt="${title}" class="canvas-img" loading="lazy" decoding="async">`;
+            item.addEventListener('click', () => {
+              const name = file.replace(/\.[^.]+$/, '');
+              window.location.href = `photos/${encodeURIComponent(name)}.html`;
+            });
+            item.addEventListener('mouseover', () => item.style.transform += ' scale(1.05) translateY(-10px)');
+            item.addEventListener('mouseout', () => item.style.transform = `rotateY(${index % 2 === 0 ? -5 : 5}deg) translateZ(20px)`);
+            itemsContainer.appendChild(item);
+            galleryImages.push(item.querySelector('img'));
+          });
+        })
+        .catch(err => {
+          console.error('Error loading gallery list:', err);
+          const itemsContainer = document.querySelector('.items');
+          if (itemsContainer) {
+            const msg = document.createElement('p');
+            msg.textContent = 'Error loading gallery—please check console.';
+            itemsContainer.appendChild(msg);
           }
         });
-      },
-      onApprove: function(data, actions) {
-        return actions.order.capture().then(function(details) {
-          const form = document.querySelector('form[name="order"]');
-          const orderIdInput = form.querySelector('input[name="paypal_order_id"]');
-          const payerEmailInput = form.querySelector('input[name="paypal_payer_email"]');
-
-          if (orderIdInput) {
-            orderIdInput.value = (details && (details.id || (details.purchase_units && details.purchase_units[0] && details.purchase_units[0].payments && details.purchase_units[0].payments.captures && details.purchase_units[0].payments.captures[0] && details.purchase_units[0].payments.captures[0].id))) || '';
-          }
-          if (payerEmailInput) {
-            payerEmailInput.value = (details && details.payer && details.payer.email_address) || '';
-          }
-
-          form.submit();
-        });
-      },
-      onError: function(err) {
-        console.error('PayPal Buttons error', err);
-        alert('There was a problem processing the payment. Please try again.');
-      }
-    }).render('#paypal-button-container');
-    }
+    })();
   </script>
 </body>
 </html>
